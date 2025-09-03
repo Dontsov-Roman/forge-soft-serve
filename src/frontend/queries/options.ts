@@ -2,9 +2,11 @@ import { invoke } from '@forge/bridge';
 import { mutationOptions, queryOptions } from '@tanstack/react-query'
 import { GitPullRequest, GitRepository, MergePullRequestPayload } from '../../types';
 import { GET_PULL_REQUESTS_DEF, GET_REPOSITORIES_DEF, MERGE_PULL_REQUESTS_DEF } from '../../constants';
-import { GET_PULL_REQUESTS_KEY, GET_REPOSITORIES_KEY, MERGE_PULL_REQUESTS_KEY } from './keys';
+import { GET_ISSUE_KEY, GET_ISSUE_TRANSITION_KEY, GET_PULL_REQUESTS_KEY, GET_REPOSITORIES_KEY, MERGE_PULL_REQUESTS_KEY, MOVE_ISSUE_TO_DONE_KEY } from './keys';
 import { GetPullRequestPayload } from '../../types';
+import { IssueService } from '../../services/issues';
 
+const issueService = new IssueService();
 const staleTime = 5000;
 export const getRepositoriesOption = () => queryOptions({
     queryKey: [GET_REPOSITORIES_KEY],
@@ -18,7 +20,25 @@ export const getPullRequestsOption = (payload: GetPullRequestPayload) => queryOp
     staleTime,
 });
 
-export const mergePullRequestMutation = (payload: MergePullRequestPayload) => mutationOptions({
-    mutationKey: [MERGE_PULL_REQUESTS_KEY],
-    mutationFn: () => invoke(MERGE_PULL_REQUESTS_DEF, payload),
+export const getIssueOption = (id: string) => queryOptions({
+    queryKey: [GET_ISSUE_KEY, id],
+    queryFn: () => issueService.getIssue(id),
+    staleTime,
+});
+
+export const getIssueTransitionOption = (id: string) => queryOptions({
+    queryKey: [GET_ISSUE_TRANSITION_KEY, id],
+    queryFn: () => issueService.getTransitions(id),
+    staleTime,
+});
+
+export const mergePullRequestMutation = () => mutationOptions({
+    // mutationKey: [MERGE_PULL_REQUESTS_KEY],
+    mutationFn: (payload: MergePullRequestPayload) => invoke(MERGE_PULL_REQUESTS_DEF, payload),
+    onMutate: (payload) => { console.log(payload); }
+});
+
+export const moveIssueToDoneMutation = () => mutationOptions({
+    mutationKey: [MOVE_ISSUE_TO_DONE_KEY],
+    mutationFn: (key: string) => issueService.moveToDone(key),
 });

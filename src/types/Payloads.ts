@@ -4,8 +4,8 @@ export type GetPullRequestPayload = {
 };
 
 export type MergePullRequestPayload = {
-    owner: string;
-    repo: string;
+    owner: string | number;
+    repo: string | number;
     pull_number: number;
     commit_title?: string;
     commit_message?: string;
