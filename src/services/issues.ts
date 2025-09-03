@@ -35,14 +35,18 @@ export class IssueService {
 
     async getTransitions(id: string): Promise<IssueTransition[]> {
         const response = await requestJira(`${this.url}/${id}/transitions`, this.getMethod);
-        return response.json();
+        const { transitions } = await response.json();
+        return transitions;
     }
 
     async moveToDone(id: string) {
         const transitions = await this.getTransitions(id);
         const doneTransition = transitions.find((t: any) => t?.name === this.DONE);
         if (doneTransition) {
-            await requestJira(`${this.url}/${id}/transitions`, this.preparePostMethod({ transition: { id: doneTransition.id } }));
+            const props = this.preparePostMethod({ transition: { id: doneTransition.id } });
+            const response = await requestJira(`${this.url}/${id}/transitions`, props);
+            const result = await response.json();
+            return result;
         }
     }
 }

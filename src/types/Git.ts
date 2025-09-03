@@ -33,5 +33,7 @@ export type GitPullRequest = ID & {
     user: GitUser;
     body: string;
     labels: GitLabel[];
-    repo: GitRepository;
+    base: {
+        repo: GitRepository;
+    };
 };

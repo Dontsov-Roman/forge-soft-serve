@@ -33,12 +33,12 @@ export const getIssueTransitionOption = (id: string) => queryOptions({
 });
 
 export const mergePullRequestMutation = () => mutationOptions({
-    // mutationKey: [MERGE_PULL_REQUESTS_KEY],
+    mutationKey: [MERGE_PULL_REQUESTS_KEY],
     mutationFn: (payload: MergePullRequestPayload) => invoke(MERGE_PULL_REQUESTS_DEF, payload),
-    onMutate: (payload) => { console.log(payload); }
 });
 
 export const moveIssueToDoneMutation = () => mutationOptions({
     mutationKey: [MOVE_ISSUE_TO_DONE_KEY],
     mutationFn: (key: string) => issueService.moveToDone(key),
+    onMutate: console.log,
 });

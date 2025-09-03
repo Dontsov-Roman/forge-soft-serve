@@ -7,6 +7,7 @@ export type MergePullRequestPayload = {
     owner: string | number;
     repo: string | number;
     pull_number: number;
+    title: string;
     commit_title?: string;
     commit_message?: string;
 }

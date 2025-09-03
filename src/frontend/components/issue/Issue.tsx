@@ -15,13 +15,14 @@ const colorMap: Record<string, 'added' | 'default' | 'important' | 'primary' | '
 export const Issue: React.FC<Props> = ({ title }) => {
     const { data, isLoading } = useQuery(getIssueOption(getIssueKey(title)));
     const badgeAppearance = useMemo(() => {
-        return data?.fields.statusCategory.colorName ? colorMap[data?.fields.statusCategory.colorName] : 'default';
+        if (!data?.id) return 'removed';
+        return data?.fields?.statusCategory?.colorName ? colorMap[data?.fields.statusCategory.colorName] : 'default';
     }, [data]);
     return (
         <Suspense fallback="Issue is loading">
             <Inline>
                 <Text>{data?.key}</Text>
-                <Badge appearance={badgeAppearance}>{data?.fields.statusCategory.name}</Badge>
+                <Badge appearance={badgeAppearance}>{data?.fields?.statusCategory?.name || 'Ticket not found'}</Badge>
             </Inline>
         </Suspense>
     );

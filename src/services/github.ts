@@ -46,19 +46,20 @@ export class GitService {
         pull_number,
         commit_title,
         commit_message,
-    }: MergePullRequestPayload): Promise<any> => {
+    }: MergePullRequestPayload): Promise<{ data: { message: string; }}> => {
         commit_title = commit_title ?? `Merge PR #${pull_number}`;
         commit_message = commit_message ?? `Merge PR #${pull_number}`;
         console.log(owner, repo, pull_number);
-        const result = await this.octokit.request(`PUT /repos/${owner}/${repo}/pulls/${pull_number}/merge`, {
+        const { data } = await this.octokit.request(`PUT /repos/${owner}/${repo}/pulls/${pull_number}/merge`, {
             owner,
             repo,
             pull_number,
             commit_title,
             commit_message,
+            merge_method: "squash",
             headers: this.headers
         });
-        console.log(result);
-        return result;
+        console.log(data);
+        return data;
     };
 }
