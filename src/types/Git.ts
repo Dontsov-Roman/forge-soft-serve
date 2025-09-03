@@ -28,6 +28,7 @@ export type GitPullRequest = ID & {
     number: number;
     state: string;
     locked: boolean;
+    merged_at: string;
     title: string;
     user: GitUser;
     body: string;
