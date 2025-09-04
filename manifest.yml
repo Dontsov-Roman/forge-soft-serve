@@ -33,6 +33,10 @@ permissions:
     - read:jira-work
     - write:jira-work
   external:
+    images:
+      - 'https://secure.gravatar.com/avatar/*'
+      - 'https://avatars.githubusercontent.com/u/*'
+      - 'https://avatars.githubusercontent.com'
     fetch:
       client:
         - remote: git-api

@@ -1,16 +1,28 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useCallback } from 'react';
 import { Box, LoadingButton, Inline, Text, Spinner, SectionMessage, Stack } from '@forge/react';
 import { GetPullRequestPayload } from '../../../types';
 import { PullRequest } from '../shared/PullRequest';
 import { Issue } from '../issue/Issue';
 import { useMerge } from '../../hooks/useMerge';
+import { ConfirmModal } from '../shared/ConfirmModal';
 
 type Props = {
     payload: GetPullRequestPayload;
 };
 
 export const PullRequestList: React.FC<Props> = ({ payload }) => {
-    const { showSpinner, data, mergeInProgress, showSuccessMessage, onMerge } = useMerge(payload);
+    const {
+        showSpinner,
+        data,
+        mergeInProgress,
+        showSuccessMessage,
+        isModalOpen,
+        setModalOpen,
+        onMerge,
+    } = useMerge(payload);
+
+    const openModal = useCallback(() => setModalOpen(true), [setModalOpen]);
+    const closeModal = useCallback(() => setModalOpen(false), [setModalOpen]);
 
     return (
         <Suspense fallback={<Spinner size="large" />}>
@@ -29,12 +41,20 @@ export const PullRequestList: React.FC<Props> = ({ payload }) => {
                             <LoadingButton
                                 shouldFitContainer
                                 isLoading={mergeInProgress || pr.locked}
-                                onClick={() => onMerge(pr)}
+                                onClick={openModal}
                                 appearance='primary'
                             >
                                 Merge
                             </LoadingButton>
                         </Stack>
+                        <ConfirmModal
+                            isOpen={isModalOpen}
+                            onConfirm={() => {
+                                closeModal();
+                                onMerge(pr);
+                            }}
+                            onCancel={closeModal}
+                        />
                     </Box>
                     <Issue title={pr.title} />
                 </Inline>

@@ -1,10 +1,17 @@
 import { ID } from "./Base";
 
+type AvatarUrls = {
+    '16x16': string;
+    '24x24': string;
+    '32x32': string;
+    '48x48': string;
+};
 export type AtlassianUser = {
     accountId: string;
     displayName: string;
     emailAddress: string;
     active: boolean;
+    avatarUrls: AvatarUrls;
 };
 
 export type AtlassianProject = ID & {

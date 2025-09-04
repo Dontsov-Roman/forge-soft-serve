@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useSimpleTimeout } from "./useSimpleTimeout";
 import { getIssueKey } from "../utils/getIssueKey";
 import { getIssueOption, getPullRequestsOption, mergePullRequestMutation, moveIssueToDoneMutation } from "../queries/options";
@@ -7,6 +7,8 @@ import { GET_ISSUE_KEY, GET_PULL_REQUESTS_KEY } from "../queries/keys";
 import { GetPullRequestPayload, GitPullRequest } from "../../types";
 
 export const useMerge = (payload: GetPullRequestPayload) => {
+    const [isModalOpen, setModalOpen] = useState(false);
+
     const queryClient = useQueryClient();
     const { enabled: showSuccessMessage, onClick: toggleSuccessMessage } = useSimpleTimeout();
     const { data, isPending: prIsLoading } = useQuery(getPullRequestsOption(payload));
@@ -37,10 +39,12 @@ export const useMerge = (payload: GetPullRequestPayload) => {
 
     return {
         onMerge,
+        setModalOpen,
         showSpinner: prIsLoading,
         data,
         mergeInProgress,
         showSuccessMessage,
+        isModalOpen,
     };
 
 };
