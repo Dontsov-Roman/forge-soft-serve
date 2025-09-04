@@ -1,5 +1,5 @@
 import React, { Suspense, useMemo } from "react";
-import { Text, Badge, Inline, Box, Spinner, Stack, User } from "@forge/react";
+import { Text, Badge, Inline, Box, Spinner, Stack, User, Image } from "@forge/react";
 import { BadgeProps } from "@forge/react/out/types";
 import { useQuery } from "@tanstack/react-query";
 import { getIssueOption } from "../../queries/options";
@@ -22,7 +22,7 @@ export const Issue: React.FC<Props> = ({ title }) => {
         return data?.fields?.statusCategory?.colorName ? colorMap[data?.fields.statusCategory.colorName] : 'default';
     }, [data]);
     const accountId = useMemo(() => data?.fields?.assignee?.accountId || '', [data]);
-    const showSummary = useMemo(() => data?.fields?.issuetype?.name && data?.fields?.summary, [data])
+    const showSummary = useMemo(() => data?.fields?.issuetype?.name && data?.fields?.summary, [data]);
 
     return (
         <Suspense fallback={<Spinner size="large" />}>
@@ -33,7 +33,10 @@ export const Issue: React.FC<Props> = ({ title }) => {
                         <Text>{data?.key}</Text>
                         <Badge appearance={badgeAppearance}>{data?.fields?.status?.name || 'Ticket not found'}</Badge>
                     </Inline>
-                    {showSummary && <Text>{data?.fields?.issuetype?.name}: {data?.fields?.summary}</Text>}
+                    {showSummary && <Inline space="space.025" alignBlock="start">
+                        <Text><Image src={data?.fields?.issuetype.iconUrl || ''} size="xsmall" width={15} /></Text>
+                        <Text>{data?.fields?.summary}</Text>
+                    </Inline>}
                     {accountId && <Inline alignInline="center" alignBlock="center">
                         <Text>Assignee:</Text>
                         <User accountId={accountId} />

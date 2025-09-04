@@ -1,5 +1,5 @@
 import React, { Suspense, useCallback } from 'react';
-import { Box, LoadingButton, Inline, Text, Spinner, Stack, Button } from '@forge/react';
+import { Box, LoadingButton, Inline, Spinner, Stack, Button, EmptyState } from '@forge/react';
 import { GetPullRequestPayload } from '../../../types';
 import { PullRequest } from '../shared/PullRequest';
 import { Issue } from '../issue/Issue';
@@ -16,6 +16,7 @@ export const PullRequestList: React.FC<Props> = ({ payload }) => {
         data,
         mergeInProgress,
         isModalOpen,
+        isAprrovePending,
         setModalOpen,
         onMerge,
         onApprove,
@@ -40,6 +41,7 @@ export const PullRequestList: React.FC<Props> = ({ payload }) => {
                             <PullRequest pr={pr} />
                             <Inline space='space.100'>
                                 <Button
+                                    isDisabled={isAprrovePending}
                                     appearance='default'
                                     iconBefore="check-circle-outline"
                                     onClick={() => onApprove(pr)}
@@ -67,7 +69,7 @@ export const PullRequestList: React.FC<Props> = ({ payload }) => {
                     <Issue title={pr.title} />
                 </Inline>
             )) : null}
-            {!showSpinner && !data?.length ? <Text>No Pull Requests</Text> : null}
+            {!showSpinner && !data?.length ? <EmptyState header='No Pull Requests' /> : null}
         </Suspense>
     );
 };

@@ -35,6 +35,7 @@ permissions:
   external:
     images:
       - 'https://secure.gravatar.com/avatar/*'
+      - 'https://api.atlassian.com'
       - 'https://avatars.githubusercontent.com/u/*'
       - 'https://avatars.githubusercontent.com'
     fetch:

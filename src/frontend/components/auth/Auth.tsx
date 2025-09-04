@@ -1,16 +1,15 @@
 import React from 'react';
-import { Box, LoadingButton as Button, Form, FormFooter, FormHeader, FormSection, Label, RequiredAsterisk, SectionMessage, Textfield, useForm } from '@forge/react';
+import { Box, LoadingButton as Button, Form, FormFooter, FormHeader, FormSection, Label, RequiredAsterisk, Textfield, useForm } from '@forge/react';
 import { AuthPayload } from '../../../types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { authMutation } from '../../queries/options';
 import { GET_ISSUE_KEY, GET_ISSUE_TRANSITION_KEY, GET_PULL_REQUESTS_KEY, GET_REPOSITORIES_KEY } from '../../queries/keys';
-import { useMessage } from '../messages/MessageContext';
+import { useMessage } from "../../hooks";
 
 type Props = {};
 
 export const Auth: React.FC<Props> = () => {
     const qClient = useQueryClient();
-    // const { enabled: showSuccessMessage, onClick: toggleMessage } = useSimpleTimeout();
     const { showMessage } = useMessage();
 
     const { mutate: setToken, isPending } = useMutation({

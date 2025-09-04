@@ -42,4 +42,3 @@ export const MessageProvider: React.FC<{ children: React.ReactNode }> = ({ child
     );
 };
 
-export const useMessage = () => useContext(MessageContext);

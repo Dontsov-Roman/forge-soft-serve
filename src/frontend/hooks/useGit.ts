@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { useSimpleTimeout } from "./useSimpleTimeout";
 import { getIssueKey } from "../utils/getIssueKey";
 import { GET_ISSUE_KEY, GET_PULL_REQUESTS_KEY } from "../queries/keys";
 import { GetPullRequestPayload, GitPullRequest, PullRequestEventEnum } from "../../types";
@@ -12,21 +11,21 @@ import {
     moveIssueToDoneMutation,
     reviewPullRequestMutation,
 } from "../queries/options";
-import { useMessage } from "../components/messages/MessageContext";
+import { useMessage } from "./useMessage";
 
 export const useGit = (payload: GetPullRequestPayload) => {
     const [isModalOpen, setModalOpen] = useState(false);
     const { showMessage } = useMessage();
 
     const queryClient = useQueryClient();
-    const { enabled: showSuccessMessage, onClick: toggleSuccessMessage } = useSimpleTimeout();
     const { data, isPending: prIsLoading } = useQuery(getPullRequestsOption(payload));
     
     useQueries({
         queries: data?.map((pr) => getIssueOption(getIssueKey(pr.title))) || [],
     });
-    const { mutate: reviewPullRequest } = useMutation({
+    const { mutate: reviewPullRequest, isPending: isAprrovePending } = useMutation({
         ...reviewPullRequestMutation(),
+        onSuccess: () => showMessage({ message: 'Pr approved', appearance: 'information' }),
         onError: (err) => showMessage({ message: err.message, appearance: 'error' }),
     });
 
@@ -64,10 +63,9 @@ export const useGit = (payload: GetPullRequestPayload) => {
         onApprove,
         setModalOpen,
         showSpinner: prIsLoading,
+        isAprrovePending,
         data,
         mergeInProgress,
-        showSuccessMessage,
         isModalOpen,
     };
-
 };
