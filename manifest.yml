@@ -1,6 +1,13 @@
 modules:
   jira:adminPage:
-    - key: forge-soft-serve-hello-world-admin-page
+    - key: forge-soft-serve-auth
+      resource: auth
+      resolver:
+        function: resolver
+      render: native
+      title: Authentication
+      useAsGetStarted: true 
+    - key: forge-soft-serve
       resource: main
       resolver:
         function: resolver
@@ -10,6 +17,8 @@ modules:
     - key: resolver
       handler: index.handler
 resources:
+  - key: auth
+    path: src/frontend/auth.tsx
   - key: main
     path: src/frontend/index.tsx
 app:

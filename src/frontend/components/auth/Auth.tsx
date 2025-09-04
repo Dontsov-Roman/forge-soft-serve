@@ -11,9 +11,11 @@ export const Auth: React.FC<Props> = () => {
     const qClient = useQueryClient();
     const { mutate: setToken } = useMutation({
         ...authMutation(),
-        onSuccess: () => qClient.invalidateQueries({
-            queryKey: [GET_REPOSITORIES_KEY, GET_ISSUE_KEY, GET_PULL_REQUESTS_KEY, GET_ISSUE_TRANSITION_KEY]
-        }),
+        onSuccess: () => {
+            qClient.invalidateQueries({
+                queryKey: [GET_REPOSITORIES_KEY, GET_ISSUE_KEY, GET_PULL_REQUESTS_KEY, GET_ISSUE_TRANSITION_KEY]
+            });
+        },
     });
     const { handleSubmit, getFieldId, register } = useForm<AuthPayload>();
     return (

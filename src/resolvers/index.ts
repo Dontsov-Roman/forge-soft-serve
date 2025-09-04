@@ -18,7 +18,6 @@ resolver.define(GET_REPOSITORIES_DEF, async (req) => {
   return gitService.getRepositories();
 });
 
-
 resolver.define(GET_PULL_REQUESTS_DEF, async (req) => {
   return gitService.getPullRequests(req.payload);
 });
@@ -28,7 +27,8 @@ resolver.define(MERGE_PULL_REQUESTS_DEF, async (req) => {
 });
 
 resolver.define(SET_GIT_HUB_TOKEN_DEF, async (req: { payload: AuthPayload }) => {
-  return gitService.setToken(req.payload?.token);
+  console.log(req);
+  return gitService.setToken(req?.payload?.token);
 });
 
 export const handler = resolver.getDefinitions();
