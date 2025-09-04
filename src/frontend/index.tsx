@@ -13,7 +13,6 @@ const queryClient = new QueryClient();
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Text align="center">Forge Soft Serve</Text>
       <RepositoryList />
     </QueryClientProvider>
   );

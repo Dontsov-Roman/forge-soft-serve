@@ -1,16 +1,17 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export const useSimpleTimeout = (defaultOpenTimeout = 3000) => {
+    const ref = useRef<number>();
     const [enabled, setEnabled] = useState(false);
-    let timeOut: number = 0;
     
     const onClick = useCallback(() => {
         setEnabled(true);
-        timeOut = setTimeout(() => { setEnabled(false); }, defaultOpenTimeout);
-    }, [timeOut, defaultOpenTimeout, setEnabled]);
+        clearTimeout(ref.current);
+        ref.current = setTimeout(() => setEnabled(false), defaultOpenTimeout);
+    }, [ref.current, defaultOpenTimeout, setEnabled]);
 
     useEffect(() => {
-        return () => clearTimeout(timeOut);
+        return () => clearTimeout(ref.current);
     }, []);
     
     return { enabled, onClick };
