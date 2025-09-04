@@ -6,6 +6,7 @@ import {
   GIT_HUB_ORG,
   GIT_HUB_VERSION,
   MERGE_PULL_REQUESTS_DEF,
+  REVIEW_PULL_REQUESTS_DEF,
   SET_GIT_HUB_TOKEN_DEF,
 } from '../constants';
 import { AuthPayload } from '../types';
@@ -26,8 +27,11 @@ resolver.define(MERGE_PULL_REQUESTS_DEF, async (req) => {
   return gitService.mergePullRequest(req.payload);
 });
 
+resolver.define(REVIEW_PULL_REQUESTS_DEF, async (req) => {
+  return gitService.reviewPullRequest(req.payload);
+});
+
 resolver.define(SET_GIT_HUB_TOKEN_DEF, async (req: { payload: AuthPayload }) => {
-  console.log(req);
   return gitService.setToken(req?.payload?.token);
 });
 

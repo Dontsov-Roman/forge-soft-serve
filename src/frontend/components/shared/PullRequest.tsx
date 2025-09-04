@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Inline, Stack, Tag, TagGroup, Text } from '@forge/react';
+import { Inline, Link, Stack, Tag, TagGroup, Text } from '@forge/react';
 import { GitPullRequest } from '../../../types';
 import { TagColor } from '@forge/react/out/types';
 import { Avatar } from './Avatar';
@@ -25,7 +25,9 @@ export const PullRequest: React.FC<Props> = ({ pr }) => {
 
     return (
         <Stack space='space.025'>
-            <Text>{pr.title}</Text>
+            <Link href={pr.html_url}>
+                <Text>{pr.title}</Text>
+            </Link>
             <Text>{pr.body}</Text>
             <Inline alignBlock='center' space='space.100'>
                 <Text>Author:</Text>

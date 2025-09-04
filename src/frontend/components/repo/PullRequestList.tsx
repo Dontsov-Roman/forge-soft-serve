@@ -1,9 +1,9 @@
 import React, { Suspense, useCallback } from 'react';
-import { Box, LoadingButton, Inline, Text, Spinner, SectionMessage, Stack } from '@forge/react';
+import { Box, LoadingButton, Inline, Text, Spinner, SectionMessage, Stack, Button } from '@forge/react';
 import { GetPullRequestPayload } from '../../../types';
 import { PullRequest } from '../shared/PullRequest';
 import { Issue } from '../issue/Issue';
-import { useMerge } from '../../hooks/useMerge';
+import { useGit } from '../../hooks/useGit';
 import { ConfirmModal } from '../shared/ConfirmModal';
 
 type Props = {
@@ -19,7 +19,8 @@ export const PullRequestList: React.FC<Props> = ({ payload }) => {
         isModalOpen,
         setModalOpen,
         onMerge,
-    } = useMerge(payload);
+        onApprove,
+    } = useGit(payload);
 
     const openModal = useCallback(() => setModalOpen(true), [setModalOpen]);
     const closeModal = useCallback(() => setModalOpen(false), [setModalOpen]);
@@ -38,14 +39,22 @@ export const PullRequestList: React.FC<Props> = ({ payload }) => {
                     >
                         <Stack space='space.200'>
                             <PullRequest pr={pr} />
-                            <LoadingButton
-                                shouldFitContainer
-                                isLoading={mergeInProgress || pr.locked}
-                                onClick={openModal}
-                                appearance='primary'
-                            >
-                                Merge
-                            </LoadingButton>
+                            <Inline space='space.100'>
+                                <Button
+                                    appearance='default'
+                                    iconBefore="check-circle-outline"
+                                    onClick={() => onApprove(pr)}
+                                >
+                                    Approve
+                                </Button>
+                                <LoadingButton
+                                    isLoading={mergeInProgress || pr.locked}
+                                    onClick={openModal}
+                                    appearance='primary'
+                                >
+                                    Merge
+                                </LoadingButton>
+                                </Inline>
                         </Stack>
                         <ConfirmModal
                             isOpen={isModalOpen}

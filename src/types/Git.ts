@@ -25,6 +25,7 @@ export type GitRepository = ID & {
 
 export type GitPullRequest = ID & {
     url: string;
+    html_url: string;
     number: number;
     state: string;
     locked: boolean;

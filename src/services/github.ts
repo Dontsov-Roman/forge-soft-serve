@@ -1,6 +1,6 @@
 import { Octokit } from "octokit";
 import { kvs } from '@forge/kvs'
-import { GetPullRequestPayload, GitPullRequest, GitRepository, MergePullRequestPayload } from "../types";
+import { CreateReviewPullRequest, GetPullRequestPayload, GitPullRequest, GitRepository, MergePullRequestPayload } from "../types";
 import { GIT_HUB_STORE_KEY } from "../constants";
 
 export class GitService {
@@ -47,6 +47,23 @@ export class GitService {
         });
 
         return data;
+    };
+
+    reviewPullRequest = async ({
+        owner,
+        repo,
+        pull_number,
+        event,
+        body = 'Automatic message, approved via Forge',
+    }: CreateReviewPullRequest) => {
+        await this.octokit.request(`POST /repos/${owner}/${repo}/pulls/${pull_number}/reviews`, {
+            owner,
+            repo,
+            pull_number,
+            event,
+            body,
+            headers: this.headers
+        })
     };
 
     mergePullRequest = async ({

@@ -1,12 +1,19 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
+import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
+
 import { useSimpleTimeout } from "./useSimpleTimeout";
 import { getIssueKey } from "../utils/getIssueKey";
-import { getIssueOption, getPullRequestsOption, mergePullRequestMutation, moveIssueToDoneMutation } from "../queries/options";
-import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GET_ISSUE_KEY, GET_PULL_REQUESTS_KEY } from "../queries/keys";
-import { GetPullRequestPayload, GitPullRequest } from "../../types";
+import { GetPullRequestPayload, GitPullRequest, PullRequestEventEnum } from "../../types";
+import {
+    getIssueOption,
+    getPullRequestsOption,
+    mergePullRequestMutation,
+    moveIssueToDoneMutation,
+    reviewPullRequestMutation,
+} from "../queries/options";
 
-export const useMerge = (payload: GetPullRequestPayload) => {
+export const useGit = (payload: GetPullRequestPayload) => {
     const [isModalOpen, setModalOpen] = useState(false);
 
     const queryClient = useQueryClient();
@@ -16,6 +23,7 @@ export const useMerge = (payload: GetPullRequestPayload) => {
     useQueries({
         queries: data?.map((pr) => getIssueOption(getIssueKey(pr.title))) || [],
     });
+    const { mutate: reviewPullRequest } = useMutation(reviewPullRequestMutation());
 
     const { mutate: closeIssue } = useMutation({
         ...moveIssueToDoneMutation(),
@@ -37,8 +45,18 @@ export const useMerge = (payload: GetPullRequestPayload) => {
         mergePr({ repo: pr.base.repo.name, owner: pr.base.repo.owner.login, pull_number: pr.number, title: pr.title });
     }, [mergePr, closeIssue]);
 
+    const onApprove = useCallback(async (pr: GitPullRequest) => {
+        reviewPullRequest({
+            repo: pr.base.repo.name,
+            owner: pr.base.repo.owner.login,
+            pull_number: pr.number,
+            event: PullRequestEventEnum.APPROVE,
+        });
+    }, [reviewPullRequest]);
+
     return {
         onMerge,
+        onApprove,
         setModalOpen,
         showSpinner: prIsLoading,
         data,
