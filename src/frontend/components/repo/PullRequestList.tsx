@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Box, LoadingButton, Inline, Text, Spinner, SectionMessage } from '@forge/react';
+import { Box, LoadingButton, Inline, Text, Spinner, SectionMessage, Stack } from '@forge/react';
 import { GetPullRequestPayload } from '../../../types';
 import { PullRequest } from '../shared/PullRequest';
 import { Issue } from '../issue/Issue';
@@ -24,12 +24,17 @@ export const PullRequestList: React.FC<Props> = ({ payload }) => {
                         padding="space.200"
                         backgroundColor='color.background.information'
                     >
-                        <PullRequest pr={pr} />
-                        <LoadingButton
-                            isLoading={mergeInProgress || pr.locked}
-                            onClick={() => onMerge(pr)}
-                            appearance='primary'
-                        >Merge</LoadingButton>
+                        <Stack space='space.200'>
+                            <PullRequest pr={pr} />
+                            <LoadingButton
+                                shouldFitContainer
+                                isLoading={mergeInProgress || pr.locked}
+                                onClick={() => onMerge(pr)}
+                                appearance='primary'
+                            >
+                                Merge
+                            </LoadingButton>
+                        </Stack>
                     </Box>
                     <Issue title={pr.title} />
                 </Inline>
