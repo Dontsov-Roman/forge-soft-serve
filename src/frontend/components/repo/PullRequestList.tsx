@@ -1,5 +1,5 @@
 import React, { Suspense, useCallback } from 'react';
-import { Box, LoadingButton, Inline, Spinner, Stack, Button, EmptyState } from '@forge/react';
+import { Box, LoadingButton, Inline, Spinner, Stack, Button, EmptyState, ButtonGroup } from '@forge/react';
 import { GetPullRequestPayload } from '../../../types';
 import { PullRequest } from '../shared/PullRequest';
 import { Issue } from '../issue/Issue';
@@ -39,7 +39,7 @@ export const PullRequestList: React.FC<Props> = ({ payload }) => {
                     >
                         <Stack space='space.200'>
                             <PullRequest pr={pr} />
-                            <Inline space='space.100'>
+                            <ButtonGroup>
                                 <Button
                                     isDisabled={isAprrovePending}
                                     appearance='default'
@@ -55,7 +55,7 @@ export const PullRequestList: React.FC<Props> = ({ payload }) => {
                                 >
                                     Merge
                                 </LoadingButton>
-                                </Inline>
+                            </ButtonGroup>
                         </Stack>
                         <ConfirmModal
                             isOpen={isModalOpen}

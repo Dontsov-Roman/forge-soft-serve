@@ -20,6 +20,7 @@ export type GitRepository = ID & {
     language?: string;
     description?: string;
     updated_at?: string;
+    html_url: string;
     owner: GitUser;
 };
 
@@ -30,6 +31,8 @@ export type GitPullRequest = ID & {
     state: string;
     locked: boolean;
     merged_at: string;
+    created_at: string;
+    updated_at: string;
     title: string;
     user: GitUser;
     body: string;

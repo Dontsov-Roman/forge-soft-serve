@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Inline, Link, Stack, Tag, TagGroup, Text } from '@forge/react';
+import { Icon, Inline, Link, Stack, Tag, TagGroup, Text } from '@forge/react';
 import { GitPullRequest } from '../../../types';
 import { TagColor } from '@forge/react/out/types';
 import { Avatar } from './Avatar';
@@ -22,6 +22,8 @@ const TAGS_COLOR_MAP: Record<string, TagColor> = {
 
 export const PullRequest: React.FC<Props> = ({ pr }) => {
     const merged = useMemo(() => pr.merged_at ? (new Date(pr.merged_at)).toLocaleString() : 'No', [pr.merged_at]);
+    const createdAt = useMemo(() => (new Date(pr.created_at)).toLocaleString(), [pr.created_at]);
+    const updatedAt = useMemo(() => (new Date(pr.updated_at)).toLocaleString(), [pr.updated_at]);
 
     return (
         <Stack space='space.025'>
@@ -33,7 +35,14 @@ export const PullRequest: React.FC<Props> = ({ pr }) => {
                 <Text>Author:</Text>
                 <Avatar size='xsmall' url={pr.user.avatar_url} name={pr.user.login} />
             </Inline>
-            <Text>Locked: {pr.locked ? 'Yes' : 'No'}</Text>
+            <Text>Created at: {createdAt}</Text>
+            <Text>Last Update: {updatedAt}</Text>
+            {pr.locked &&
+                <Inline alignBlock='start'>
+                    <Text>Locked:</Text>
+                    <Icon glyph='close' label='No' />
+                </Inline>
+            }
             <Text>Merged: {merged}</Text>
             <TagGroup>
                 {pr.labels?.map((label) => (
