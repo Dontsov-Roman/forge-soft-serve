@@ -11,3 +11,6 @@ export type MergePullRequestPayload = {
     commit_title?: string;
     commit_message?: string;
 }
+export type AuthPayload = {
+    token: string;
+};

@@ -1,5 +1,7 @@
 import { Octokit } from "octokit";
+import { kvs } from '@forge/kvs'
 import { GetPullRequestPayload, GitPullRequest, GitRepository, MergePullRequestPayload } from "../types";
+import { GIT_HUB_STORE_KEY } from "../constants";
 
 export class GitService {
     private octokit: Octokit;
@@ -9,6 +11,7 @@ export class GitService {
     constructor(organization: string, version: string) {
         this.org = organization;
         this.version = version;
+        this.init();
     }
 
     private get headers() {
@@ -17,8 +20,14 @@ export class GitService {
         };
     }
 
+    private async init() {
+        const auth = await kvs.get(GIT_HUB_STORE_KEY);
+        this.octokit = new Octokit({ auth });
+    }
+
     setToken(auth: string) {
         this.octokit = new Octokit({ auth });
+        kvs.set(GIT_HUB_STORE_KEY, auth);
     }
 
     getRepositories = async (): Promise<GitRepository[]> => {
@@ -49,7 +58,6 @@ export class GitService {
     }: MergePullRequestPayload): Promise<{ data: { message: string; }}> => {
         commit_title = commit_title ?? `Merge PR #${pull_number}`;
         commit_message = commit_message ?? `Merge PR #${pull_number}`;
-        console.log(owner, repo, pull_number);
         const { data } = await this.octokit.request(`PUT /repos/${owner}/${repo}/pulls/${pull_number}/merge`, {
             owner,
             repo,
@@ -59,7 +67,6 @@ export class GitService {
             merge_method: "squash",
             headers: this.headers
         });
-        console.log(data);
         return data;
     };
 }

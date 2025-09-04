@@ -1,8 +1,8 @@
 import { invoke } from '@forge/bridge';
 import { mutationOptions, queryOptions } from '@tanstack/react-query'
-import { GitPullRequest, GitRepository, MergePullRequestPayload } from '../../types';
-import { GET_PULL_REQUESTS_DEF, GET_REPOSITORIES_DEF, MERGE_PULL_REQUESTS_DEF } from '../../constants';
-import { GET_ISSUE_KEY, GET_ISSUE_TRANSITION_KEY, GET_PULL_REQUESTS_KEY, GET_REPOSITORIES_KEY, MERGE_PULL_REQUESTS_KEY, MOVE_ISSUE_TO_DONE_KEY } from './keys';
+import { AuthPayload, GitPullRequest, GitRepository, MergePullRequestPayload } from '../../types';
+import { GET_PULL_REQUESTS_DEF, GET_REPOSITORIES_DEF, MERGE_PULL_REQUESTS_DEF, SET_GIT_HUB_TOKEN_DEF } from '../../constants';
+import { AUTH_KEY, GET_ISSUE_KEY, GET_ISSUE_TRANSITION_KEY, GET_PULL_REQUESTS_KEY, GET_REPOSITORIES_KEY, MERGE_PULL_REQUESTS_KEY, MOVE_ISSUE_TO_DONE_KEY } from './keys';
 import { GetPullRequestPayload } from '../../types';
 import { IssueService } from '../../services/issues';
 
@@ -42,3 +42,8 @@ export const moveIssueToDoneMutation = () => mutationOptions({
     mutationFn: (key: string) => issueService.moveToDone(key),
     onMutate: console.log,
 });
+
+export const authMutation = () => mutationOptions({
+    mutationKey: [AUTH_KEY],
+    mutationFn: (payload: AuthPayload) => invoke(SET_GIT_HUB_TOKEN_DEF, payload),
+})
