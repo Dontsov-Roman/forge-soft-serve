@@ -1,5 +1,5 @@
 import React, { Suspense, useCallback } from 'react';
-import { Box, LoadingButton, Inline, Text, Spinner, SectionMessage, Stack, Button } from '@forge/react';
+import { Box, LoadingButton, Inline, Text, Spinner, Stack, Button } from '@forge/react';
 import { GetPullRequestPayload } from '../../../types';
 import { PullRequest } from '../shared/PullRequest';
 import { Issue } from '../issue/Issue';
@@ -15,7 +15,6 @@ export const PullRequestList: React.FC<Props> = ({ payload }) => {
         showSpinner,
         data,
         mergeInProgress,
-        showSuccessMessage,
         isModalOpen,
         setModalOpen,
         onMerge,
@@ -69,7 +68,6 @@ export const PullRequestList: React.FC<Props> = ({ payload }) => {
                 </Inline>
             )) : null}
             {!showSpinner && !data?.length ? <Text>No Pull Requests</Text> : null}
-            {showSuccessMessage && <SectionMessage appearance='success'>PR has been merged</SectionMessage>}
         </Suspense>
     );
 };

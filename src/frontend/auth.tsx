@@ -7,13 +7,16 @@ import {
 
 // Create a client
 import { Auth } from './components/auth/Auth';
+import { MessageProvider } from './components/messages/MessageContext';
 
 const queryClient = new QueryClient();
 
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Auth />
+      <MessageProvider>
+        <Auth />
+      </MessageProvider>
     </QueryClientProvider>
   );
 };

@@ -12,9 +12,11 @@ import {
     moveIssueToDoneMutation,
     reviewPullRequestMutation,
 } from "../queries/options";
+import { useMessage } from "../components/messages/MessageContext";
 
 export const useGit = (payload: GetPullRequestPayload) => {
     const [isModalOpen, setModalOpen] = useState(false);
+    const { showMessage } = useMessage();
 
     const queryClient = useQueryClient();
     const { enabled: showSuccessMessage, onClick: toggleSuccessMessage } = useSimpleTimeout();
@@ -23,7 +25,10 @@ export const useGit = (payload: GetPullRequestPayload) => {
     useQueries({
         queries: data?.map((pr) => getIssueOption(getIssueKey(pr.title))) || [],
     });
-    const { mutate: reviewPullRequest } = useMutation(reviewPullRequestMutation());
+    const { mutate: reviewPullRequest } = useMutation({
+        ...reviewPullRequestMutation(),
+        onError: (err) => showMessage({ message: err.message, appearance: 'error' }),
+    });
 
     const { mutate: closeIssue } = useMutation({
         ...moveIssueToDoneMutation(),
@@ -37,7 +42,7 @@ export const useGit = (payload: GetPullRequestPayload) => {
         onSuccess: (data, payload) => {
             closeIssue(getIssueKey(payload.title));
             queryClient.invalidateQueries({ queryKey: [GET_PULL_REQUESTS_KEY] });
-            toggleSuccessMessage();
+            showMessage({ message: 'PR merged succesfully', appearance: 'success' })
         },
     });
 
