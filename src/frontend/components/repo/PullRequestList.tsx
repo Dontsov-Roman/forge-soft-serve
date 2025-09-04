@@ -1,50 +1,29 @@
-import React, { Suspense, useCallback } from 'react';
-import { Box, LoadingButton, Inline, Text } from '@forge/react';
-import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getIssueOption, getPullRequestsOption, mergePullRequestMutation, moveIssueToDoneMutation } from '../../queries/options';
-import { GetPullRequestPayload, GitPullRequest } from '../../../types';
+import React, { Suspense } from 'react';
+import { Box, LoadingButton, Inline, Text, Spinner, SectionMessage } from '@forge/react';
+import { GetPullRequestPayload } from '../../../types';
 import { PullRequest } from '../shared/PullRequest';
-import { getIssueKey } from '../../utils/getIssueKey';
 import { Issue } from '../issue/Issue';
-import { GET_ISSUE_KEY, GET_PULL_REQUESTS_KEY } from '../../queries/keys';
+import { useMerge } from '../../hooks/useMerge';
 
 type Props = {
     payload: GetPullRequestPayload;
 };
 
 export const PullRequestList: React.FC<Props> = ({ payload }) => {
-    const queryClient = useQueryClient();
-    const { data } = useQuery(getPullRequestsOption(payload));
-    
-    useQueries({
-        queries: data?.map((pr) => getIssueOption(getIssueKey(pr.title))) || [],
-    });
-
-    const { mutate: closeIssue } = useMutation({
-        ...moveIssueToDoneMutation(),
-        onSuccess: (id) => {
-            queryClient.invalidateQueries({ queryKey: [GET_ISSUE_KEY, id] });
-        },
-    });
-    
-    const { mutate: mergePr, isPending: mergeInProgress } = useMutation({
-        ...mergePullRequestMutation(),
-        onSuccess: (data, payload) => {
-            closeIssue(getIssueKey(payload.title));
-            queryClient.invalidateQueries({ queryKey: [GET_PULL_REQUESTS_KEY] });
-        },
-    });
-
-    const onMerge = useCallback(async (pr: GitPullRequest) => {
-        mergePr({ repo: pr.base.repo.name, owner: pr.base.repo.owner.login, pull_number: pr.number, title: pr.title });
-    }, [mergePr, closeIssue]);
+    const { showSpinner, data, mergeInProgress, showSuccessMessage, onMerge } = useMerge(payload);
 
     return (
-        <Suspense fallback="Loading Pull Requests">
+        <Suspense fallback={<Spinner size="large" />}>
+            {showSpinner && <Spinner size="large" />}
             {data?.length ? data.map((pr) => (
-                <Inline space='space.1000' key={pr.id}>
-                    <Box backgroundColor='color.background.information'>
-                        <Text>{pr.id}</Text>
+                <Inline
+                    key={pr.id}
+                    spread='space-between'
+                >
+                    <Box
+                        padding="space.200"
+                        backgroundColor='color.background.information'
+                    >
                         <PullRequest pr={pr} />
                         <LoadingButton
                             isLoading={mergeInProgress || pr.locked}
@@ -54,7 +33,9 @@ export const PullRequestList: React.FC<Props> = ({ payload }) => {
                     </Box>
                     <Issue title={pr.title} />
                 </Inline>
-            )) : <Text>No Pull Requests</Text>}
+            )) : null}
+            {!showSpinner && !data?.length ? <Text>No Pull Requests</Text> : null}
+            {showSuccessMessage && <SectionMessage appearance='success'>PR has been merged</SectionMessage>}
         </Suspense>
     );
 };

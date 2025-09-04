@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Form, FormFooter, FormHeader, FormSection, Label, RequiredAsterisk, Textfield, useForm } from '@forge/react';
+import { Box, LoadingButton as Button, Form, FormFooter, FormHeader, FormSection, Label, RequiredAsterisk, Textfield, useForm } from '@forge/react';
 import { AuthPayload } from '../../../types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { authMutation } from '../../queries/options';
@@ -9,7 +9,8 @@ type Props = {};
 
 export const Auth: React.FC<Props> = () => {
     const qClient = useQueryClient();
-    const { mutate: setToken } = useMutation({
+
+    const { mutate: setToken, isPending } = useMutation({
         ...authMutation(),
         onSuccess: () => {
             qClient.invalidateQueries({
@@ -17,7 +18,9 @@ export const Auth: React.FC<Props> = () => {
             });
         },
     });
+    
     const { handleSubmit, getFieldId, register } = useForm<AuthPayload>();
+
     return (
         <Box>
             <Form onSubmit={handleSubmit(setToken as any)}>
@@ -32,7 +35,7 @@ export const Auth: React.FC<Props> = () => {
                     <Textfield {...register('token', { required: true })} />
                 </FormSection>
                 <FormFooter>
-                    <Button appearance="primary" type="submit">Submit</Button>
+                    <Button isLoading={isPending} appearance="primary" type="submit">Submit</Button>
                 </FormFooter>
             </Form>
         </Box>

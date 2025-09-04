@@ -1,22 +1,23 @@
 import React, { Suspense } from 'react';
-
-// Create a client
-import { RepoItem } from '../shared/RepoItem';
+import { Spinner, Stack } from '@forge/react';
 import { useQuery } from '@tanstack/react-query';
+import { RepoItem } from '../shared/RepoItem';
 import { getRepositoriesOption } from '../../queries/options';
 import { PullRequestList } from './PullRequestList';
 
 export const RepositoryList: React.FC = () => {
-    const { data } = useQuery(getRepositoriesOption());
+    const { data, isLoading } = useQuery(getRepositoriesOption());
     
     return (
-        <Suspense fallback="Loading...">
-            {data?.map((repo) => (
-                <>
-                    <RepoItem key={repo.id} repo={repo} />
-                    <PullRequestList payload={{ owner: repo.owner.login, repo: repo.name }} />
-                </>
-            ))}
+        <Suspense fallback={<Spinner size='xlarge' />}>
+            {isLoading ?
+                <Spinner size='xlarge' /> :
+                data?.map((repo) => (
+                    <Stack>
+                        <RepoItem key={repo.id} repo={repo} />
+                        <PullRequestList payload={{ owner: repo.owner.login, repo: repo.name }} />
+                    </Stack>
+                ))}
         </Suspense>
     )
 };

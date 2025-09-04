@@ -6,7 +6,7 @@ type Props = {
     repo: GitRepository;
 }
 export const RepoItem: React.FC<Props> = ({ repo: { name, owner, disabled, language } }) => (
-    <Box backgroundColor="color.background.accent.lime.subtlest">
+    <Box padding="space.200" backgroundColor="color.background.accent.lime.subtlest">
         <Text>Title: {name}</Text>
         <Text>Owner: {owner.login}</Text>
         <Text>Disabled: {disabled ? 'Yes' : 'No'}</Text>
