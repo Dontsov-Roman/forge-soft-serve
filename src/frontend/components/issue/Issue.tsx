@@ -2,7 +2,7 @@ import React, { Suspense, useMemo } from "react";
 import { Box, Spinner } from "@forge/react";
 import { BadgeProps } from "@forge/react/out/types";
 import { useQuery } from "@tanstack/react-query";
-import { getIssueOption } from "../../queries/options";
+import { getIssueOption, getIssueTransitionOption } from "../../queries/options";
 import { getIssueKey } from "../../utils/getIssueKey";
 import { IssueItem } from "../shared/IssueItem";
 
@@ -17,6 +17,7 @@ const colorMap: Record<string, BadgeProps['appearance']> = {
 
 export const Issue: React.FC<Props> = ({ title }) => {
     const { data, isLoading } = useQuery(getIssueOption(getIssueKey(title)));
+    const { data: transitions } = useQuery(getIssueTransitionOption(getIssueKey(title)));
     
     const badgeAppearance = useMemo(() => {
         if (!data?.id) return 'removed';

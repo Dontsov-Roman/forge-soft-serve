@@ -24,7 +24,7 @@ export type IssueTransition = ID & {
         summary: TransitionSummary;
     },
     hasScreen: boolean;
-    isAvailable: true,
+    isAvailable: boolean,
     isConditional: boolean;
     isGlobal: boolean;
     isInitial: boolean;

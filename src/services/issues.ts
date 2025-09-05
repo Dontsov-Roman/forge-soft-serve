@@ -41,7 +41,7 @@ export class IssueService {
 
     async moveToDone(id: string) {
         const transitions = await this.getTransitions(id);
-        const doneTransition = transitions.find((t: any) => t?.name === this.DONE);
+        const doneTransition = transitions.find((t: any) => t?.name === this.DONE && t.isAvailable);
         if (doneTransition) {
             const props = this.preparePostMethod({ transition: { id: doneTransition.id } });
             const response = await requestJira(`${this.url}/${id}/transitions`, props);

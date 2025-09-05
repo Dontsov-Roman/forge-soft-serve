@@ -14,7 +14,7 @@ const queryClient = new QueryClient();
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <MessageProvider>
+      <MessageProvider align='top' timeout={7000}>
         <RepositoryList />
       </MessageProvider>
     </QueryClientProvider>
