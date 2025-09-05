@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, ImageProps, Tooltip } from '@forge/react';
+import { Box, Image, ImageProps, Tooltip } from '@forge/react';
 
 type Props = {
     url: string;
@@ -7,7 +7,6 @@ type Props = {
     size?: ImageProps['size'];
     name?: string;
 };
-
 export const Avatar: React.FC<Props> = ({ url, name, width = 50, size = 'small' }) => {
     return (
         <Tooltip content={name}>

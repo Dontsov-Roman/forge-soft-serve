@@ -60,7 +60,6 @@ export const reviewPullRequestMutation = () => mutationOptions({
 export const moveIssueToDoneMutation = () => mutationOptions({
     mutationKey: [MOVE_ISSUE_TO_DONE_KEY],
     mutationFn: (key: string) => issueService.moveToDone(key),
-    onMutate: console.log,
 });
 
 export const authMutation = () => mutationOptions({

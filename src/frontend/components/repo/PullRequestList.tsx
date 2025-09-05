@@ -29,45 +29,47 @@ export const PullRequestList: React.FC<Props> = ({ payload }) => {
         <Suspense fallback={<Spinner size="large" />}>
             {showSpinner && <Spinner size="large" />}
             {data?.length ? data.map((pr) => (
-                <Inline
-                    key={pr.id}
-                    spread='space-between'
+                <Box
+                    padding="space.200"
+                    backgroundColor='color.background.information'
                 >
-                    <Box
-                        padding="space.200"
-                        backgroundColor='color.background.information'
+                    <Inline
+                        key={pr.id}
+                        spread='space-between'
                     >
-                        <Stack space='space.200'>
-                            <PullRequest pr={pr} />
-                            <ButtonGroup>
-                                <Button
-                                    isDisabled={isAprrovePending}
-                                    appearance='default'
-                                    iconBefore="check-circle-outline"
-                                    onClick={() => onApprove(pr)}
-                                >
-                                    Approve
-                                </Button>
-                                <LoadingButton
-                                    isLoading={mergeInProgress || pr.locked}
-                                    onClick={openModal}
-                                    appearance='primary'
-                                >
-                                    Merge
-                                </LoadingButton>
-                            </ButtonGroup>
-                        </Stack>
-                        <ConfirmModal
-                            isOpen={isModalOpen}
-                            onConfirm={() => {
-                                closeModal();
-                                onMerge(pr);
-                            }}
-                            onCancel={closeModal}
-                        />
-                    </Box>
-                    <Issue title={pr.title} />
-                </Inline>
+                        <Box padding="space.200">
+                            <Stack space='space.200'>
+                                <PullRequest pr={pr} />
+                                <ButtonGroup>
+                                    <Button
+                                        isDisabled={isAprrovePending}
+                                        appearance='default'
+                                        iconBefore="check-circle-outline"
+                                        onClick={() => onApprove(pr)}
+                                    >
+                                        Approve
+                                    </Button>
+                                    <LoadingButton
+                                        isLoading={mergeInProgress || pr.locked}
+                                        onClick={openModal}
+                                        appearance='primary'
+                                    >
+                                        Merge
+                                    </LoadingButton>
+                                </ButtonGroup>
+                            </Stack>
+                            <ConfirmModal
+                                isOpen={isModalOpen}
+                                onConfirm={() => {
+                                    closeModal();
+                                    onMerge(pr);
+                                }}
+                                onCancel={closeModal}
+                            />
+                        </Box>
+                        <Issue title={pr.title} />
+                    </Inline>
+                </Box>
             )) : null}
             {!showSpinner && !data?.length ? <EmptyState header='No Pull Requests' /> : null}
         </Suspense>

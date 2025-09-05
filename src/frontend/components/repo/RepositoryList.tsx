@@ -13,7 +13,6 @@ export const RepositoryList: React.FC = () => {
         if(error?.message)
             showMessage({ message: error?.message, appearance: 'error' });
     }, [error]);
-    console.log(data);
     
     return (
         <Suspense fallback={<Spinner size='xlarge' />}>
