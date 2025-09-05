@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from 'react';
-import { Spinner, Stack } from '@forge/react';
+import { Spinner, Stack, useConfig } from '@forge/react';
 import { useQuery } from '@tanstack/react-query';
 import { RepoItem } from '../shared/RepoItem';
 import { getRepositoriesOption } from '../../queries/options';
@@ -7,6 +7,7 @@ import { PullRequestList } from './PullRequestList';
 import { useMessage } from '../../hooks';
 
 export const RepositoryList: React.FC = () => {
+    const config = useConfig();
     const { showMessage } = useMessage();
     const { data, isLoading, error } = useQuery(getRepositoriesOption());
     useEffect(() => {

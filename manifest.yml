@@ -6,7 +6,14 @@ modules:
         function: resolver
       render: native
       title: Authentication
-      useAsGetStarted: true 
+      useAsGetStarted: true
+    - key: forge-soft-serve-config-page
+      resource: config
+      render: native
+      resolver:
+        function: resolver
+      title: "Config Page"
+      useAsConfig: true 
     - key: forge-soft-serve
       resource: main
       resolver:
@@ -19,6 +26,8 @@ modules:
 resources:
   - key: auth
     path: src/frontend/auth.tsx
+  - key: config
+    path: src/frontend/config.tsx
   - key: main
     path: src/frontend/index.tsx
 app:

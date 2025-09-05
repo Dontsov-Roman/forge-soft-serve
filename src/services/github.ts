@@ -21,13 +21,13 @@ export class GitService {
     }
 
     private async init() {
-        const auth = await kvs.get(GIT_HUB_STORE_KEY);
+        const auth = await kvs.getSecret(GIT_HUB_STORE_KEY);
         this.octokit = new Octokit({ auth });
     }
 
     setToken(auth: string) {
         this.octokit = new Octokit({ auth });
-        kvs.set(GIT_HUB_STORE_KEY, auth);
+        kvs.setSecret(GIT_HUB_STORE_KEY, auth);
     }
 
     getRepositories = async (): Promise<GitRepository[]> => {
