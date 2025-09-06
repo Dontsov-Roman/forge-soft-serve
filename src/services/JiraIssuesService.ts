@@ -1,22 +1,15 @@
-import type { RequestProductMethod } from '@forge/api'
 import { Issue } from "../types";
 import { IssueTransition } from "../types/IssueTransition";
-import { IRequester } from "./types";
+import { IIssueRequesterStrategy } from "./types";
 
-export type JiraRequest =
-    ((restPath: string, fetchOptions?: RequestInit) => Promise<Response>) |
-    ((url: any, init?: RequestInit) => Promise<Response>) | 
-    RequestProductMethod;
-
-export class IssueService {
-    private url = '/rest/api/3/issue';
+export class JiraIssuesService {
     private DONE = 'Done';
-    private requester: IRequester;
+    private requestStrategy: IIssueRequesterStrategy;
 
     constructor(
-        routeBuilder: IRequester,
+        strategy: IIssueRequesterStrategy,
     ) {
-        this.requester = routeBuilder;
+        this.requestStrategy = strategy;
     }
 
     private get headers() {
@@ -43,15 +36,12 @@ export class IssueService {
     }
 
     async getIssue(id: string): Promise<Issue> {
-        const issue = await this.requester.request<Issue>(`${this.url}/${id}`, this.getMethod);
-        console.log(issue);
+        const issue = await this.requestStrategy.getIssue(id, this.getMethod);
         return issue;
     }
 
     async getTransitions(id: string): Promise<IssueTransition[]> {
-        const response = await this.requester.request<{ transitions: IssueTransition[] }>(`${this.url}/${id}/transitions`, this.getMethod);
-        const { transitions } = response;
-        return transitions;
+        return this.requestStrategy.getTransitions(id, this.getMethod);
     }
 
     async moveToDone(id: string) {
@@ -59,7 +49,7 @@ export class IssueService {
         const doneTransition = transitions.find((t: any) => t?.name === this.DONE && t.isAvailable);
         if (doneTransition) {
             const props = this.preparePostMethod({ transition: { id: doneTransition.id } });
-            return this.requester.request(`${this.url}/${id}/transitions`, props);
+            return this.requestStrategy.moveToDone(id, props);
         }
     }
 }

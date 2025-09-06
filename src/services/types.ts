@@ -1,4 +1,9 @@
+import { Issue } from "../types";
+import { IssueTransition } from "../types/IssueTransition";
 
-export interface IRequester {
-    request<T>(url: string | TemplateStringsArray, headers?: Record<string, any>): Promise<T>;
+export type Headers = Record<string, any>;
+export interface IIssueRequesterStrategy {
+    getTransitions(id: string, headers?: Headers): Promise<IssueTransition[]>;
+    getIssue(key: string, headers?: Headers): Promise<Issue>;
+    moveToDone(key: string, headers?: Headers): Promise<void>;
 }

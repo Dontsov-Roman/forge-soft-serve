@@ -1,15 +1,14 @@
-import { GitService } from "./github";
-import { IssueService, JiraRequest } from "./issues";
-import { IRequester } from "./types";
+import { GitService } from "./GithubService";
+import { JiraIssuesService } from "./JiraIssuesService";
+import { IIssueRequesterStrategy } from "./types";
 
 export class Services {
     static githubService: GitService;
-    static issueService: IssueService;
+    static issueService: JiraIssuesService;
 
-    static request: JiraRequest;
     static organization: string;
     static version: string;
-    static requester: IRequester;
+    static requestStrategy: IIssueRequesterStrategy;
 
     static async createGitService() {
         if (!Services.githubService) {
@@ -20,25 +19,24 @@ export class Services {
 
     static async createIssueService() {
         if (!Services.issueService) {
-            Services.issueService = new IssueService(Services.requester);
+            Services.issueService = new JiraIssuesService(Services.requestStrategy);
         }
     }
 
-    static buildGit(
+    static async buildGit(
         organization: string,
         version: string,
-    ): Services {
+    ) {
         Services.organization = organization;
         Services.version = version;
-        Services.createGitService();
-        return Services;
+        return Services.createGitService();
     }
 
     static async buildIssue(
-        requester: IRequester,
+        requester: IIssueRequesterStrategy,
     ) {
-        Services.requester = requester;
-        Services.createIssueService()
+        Services.requestStrategy = requester;
+        return Services.createIssueService();
     }
 
     static async getGitHubService(): Promise<GitService>  {
@@ -47,7 +45,7 @@ export class Services {
     }
 
     
-    static async getIssueService(): Promise<IssueService>  {
+    static async getIssueService(): Promise<JiraIssuesService>  {
         await Services.createIssueService();
         return Services.issueService;
     }

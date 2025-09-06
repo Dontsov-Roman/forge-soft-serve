@@ -38,9 +38,9 @@ app:
   id: ari:cloud:ecosystem::app/e241775e-d7de-4788-94f2-983969856a80
 permissions:
   scopes:
-    - storage:app
     - read:jira-work
     - write:jira-work
+    - storage:app
   external:
     images:
       - 'https://secure.gravatar.com/avatar/*'

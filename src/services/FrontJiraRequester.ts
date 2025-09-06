@@ -1,10 +1,20 @@
-import type { Route } from "@forge/api";
-import { IRequester } from "./types";
 import { requestJira } from "@forge/bridge";
+import { IIssueRequesterStrategy, Headers } from "./types";
+import { Issue } from "../types";
+import { IssueTransition } from "../types/IssueTransition";
 
-export class FrontJiraRequester implements IRequester {
-    async request<T>(url: string | TemplateStringsArray, headers?: Record<string, any>): Promise<T> {
-        const result = await requestJira(url as string, headers);
-        return result.json() as T;
+export class FrontJiraRequesterStrategy implements IIssueRequesterStrategy {
+    private url = '/rest/api/3/issue';
+    async getIssue(key: string, headers?: Headers): Promise<Issue> {
+        const res = await requestJira(`${this.url}/${key}`, headers);
+        return res.json();
+    }
+    async getTransitions(id: string, headers?: Headers): Promise<IssueTransition[]> {
+        const response = await requestJira(`${this.url}/${id}/transitions`, headers);
+        const { transitions } = await response.json();
+        return transitions;
+    }
+    async moveToDone(id: string, headers?: Headers) {
+        requestJira(`${this.url}/${id}/transitions`, headers);
     }
 }
