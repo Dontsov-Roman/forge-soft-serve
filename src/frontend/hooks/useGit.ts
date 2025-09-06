@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getIssueKey } from "../utils/getIssueKey";
+import { getIssueKey } from "../../utils/getIssueKey";
 import { GET_ISSUE_KEY, GET_PULL_REQUESTS_KEY } from "../queries/keys";
 import { GetPullRequestPayload, GitPullRequest, PullRequestEventEnum } from "../../types";
 import {
@@ -21,7 +21,7 @@ export const useGit = (payload: GetPullRequestPayload) => {
     const { data, isPending: prIsLoading } = useQuery(getPullRequestsOption(payload));
     
     useQueries({
-        queries: data?.map((pr) => getIssueOption(getIssueKey(pr.title))) || [],
+        queries: data?.map?.((pr) => getIssueOption(getIssueKey(pr.title))) || [],
     });
     const { mutate: reviewPullRequest, isPending: isAprrovePending } = useMutation({
         ...reviewPullRequestMutation(),

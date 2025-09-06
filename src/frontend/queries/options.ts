@@ -1,7 +1,8 @@
-import { invoke } from '@forge/bridge';
+import { invoke, requestJira } from '@forge/bridge';
 import { mutationOptions, queryOptions } from '@tanstack/react-query'
-import { AuthPayload, CreateReviewPullRequest, GitPullRequest, GitRepository, MergePullRequestPayload } from '../../types';
+import { AuthPayload, CreateReviewPullRequest, GitPullRequest, GitRepository, Issue, MergePullRequestPayload } from '../../types';
 import {
+    GET_ISSUE_DEF,
     GET_PULL_REQUESTS_DEF,
     GET_REPOSITORIES_DEF,
     MERGE_PULL_REQUESTS_DEF,
@@ -19,9 +20,10 @@ import {
     REVIEW_PULL_REQUESTS_KEY,
 } from './keys';
 import { GetPullRequestPayload } from '../../types';
-import { IssueService } from '../../services/issues';
+import { Services } from '../../services/Services';
+import { FrontRouteBuilder } from '../../services/FrontRouteBuilder';
 
-const issueService = new IssueService();
+Services.buildIssue(requestJira, new FrontRouteBuilder());
 const staleTime = 5000;
 export const getRepositoriesOption = () => queryOptions({
     queryKey: [GET_REPOSITORIES_KEY],
@@ -35,15 +37,16 @@ export const getPullRequestsOption = (payload: GetPullRequestPayload) => queryOp
     staleTime,
 });
 
-export const getIssueOption = (id: string) => queryOptions({
-    queryKey: [GET_ISSUE_KEY, id],
-    queryFn: () => issueService.getIssue(id),
+export const getIssueOption = (key: string) => queryOptions<Issue>({
+    queryKey: [GET_ISSUE_KEY, key],
+    // queryFn: async () => (await Services.getIssueService()).getIssue(key),
+    queryFn: async () => invoke(GET_ISSUE_DEF, { key }),
     staleTime,
 });
 
 export const getIssueTransitionOption = (id: string) => queryOptions({
     queryKey: [GET_ISSUE_TRANSITION_KEY, id],
-    queryFn: () => issueService.getTransitions(id),
+    queryFn: async () => (await Services.getIssueService()).getTransitions(id),
     staleTime,
 });
 
@@ -59,7 +62,7 @@ export const reviewPullRequestMutation = () => mutationOptions({
 
 export const moveIssueToDoneMutation = () => mutationOptions({
     mutationKey: [MOVE_ISSUE_TO_DONE_KEY],
-    mutationFn: (key: string) => issueService.moveToDone(key),
+    mutationFn: async (key: string) => (await Services.getIssueService()).moveToDone(key),
 });
 
 export const authMutation = () => mutationOptions({

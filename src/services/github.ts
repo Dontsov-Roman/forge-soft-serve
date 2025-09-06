@@ -20,7 +20,7 @@ export class GitService {
         };
     }
 
-    private async init() {
+    async init() {
         const auth = await kvs.getSecret(GIT_HUB_STORE_KEY);
         this.octokit = new Octokit({ auth });
     }
@@ -31,22 +31,22 @@ export class GitService {
     }
 
     getRepositories = async (): Promise<GitRepository[]> => {
-        const { data } = await this.octokit.request(`GET /orgs/${this.org}/repos`, {
+        const result = await this.octokit?.request(`GET /orgs/${this.org}/repos`, {
             org: this.org,
             headers: this.headers,
         });
 
-        return data;
+        return result?.data;
     };
 
     getPullRequests = async ({ owner, repo }: GetPullRequestPayload): Promise<GitPullRequest[]> => {
-        const { data } = await this.octokit.request(`GET /repos/${owner}/${repo}/pulls`, {
+        const result = await this.octokit?.request(`GET /repos/${owner}/${repo}/pulls`, {
             owner,
             repo,
             headers: this.headers,
         });
 
-        return data;
+        return result?.data;
     };
 
     reviewPullRequest = async ({
@@ -56,7 +56,7 @@ export class GitService {
         event,
         body = 'Automatic message, approved via Forge',
     }: CreateReviewPullRequest) => {
-        await this.octokit.request(`POST /repos/${owner}/${repo}/pulls/${pull_number}/reviews`, {
+        await this.octokit?.request(`POST /repos/${owner}/${repo}/pulls/${pull_number}/reviews`, {
             owner,
             repo,
             pull_number,
@@ -75,7 +75,7 @@ export class GitService {
     }: MergePullRequestPayload): Promise<{ data: { message: string; }}> => {
         commit_title = commit_title ?? `Merge PR #${pull_number}`;
         commit_message = commit_message ?? `Merge PR #${pull_number}`;
-        const { data } = await this.octokit.request(`PUT /repos/${owner}/${repo}/pulls/${pull_number}/merge`, {
+        const result = await this.octokit?.request(`PUT /repos/${owner}/${repo}/pulls/${pull_number}/merge`, {
             owner,
             repo,
             pull_number,
@@ -84,6 +84,7 @@ export class GitService {
             merge_method: "squash",
             headers: this.headers
         });
-        return data;
+        
+        return result?.data;
     };
 }

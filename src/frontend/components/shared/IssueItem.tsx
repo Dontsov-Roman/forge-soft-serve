@@ -17,7 +17,7 @@ export const IssueItem: React.FC<Props> = ({
     summary = '',
     iconUrl = '',
     badgeAppearance = 'default',
-    issueType = 'TIcket not found',
+    issueType = 'Ticket not found',
 }) => {
     const showSummary = useMemo(() => Boolean(iconUrl && summary), [iconUrl, summary]);
     return (

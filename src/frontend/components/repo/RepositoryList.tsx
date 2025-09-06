@@ -7,7 +7,6 @@ import { PullRequestList } from './PullRequestList';
 import { useMessage } from '../../hooks';
 
 export const RepositoryList: React.FC = () => {
-    const config = useConfig();
     const { showMessage } = useMessage();
     const { data, isLoading, error } = useQuery(getRepositoriesOption());
     useEffect(() => {
@@ -17,7 +16,7 @@ export const RepositoryList: React.FC = () => {
     
     return (
         <Suspense fallback={<Spinner size='xlarge' />}>
-            {isLoading ?
+            {isLoading || !data?.map ?
                 <Spinner size='xlarge' /> :
                 data?.map((repo) => (
                     <Stack key={repo.id}>

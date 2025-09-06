@@ -28,7 +28,7 @@ export const PullRequestList: React.FC<Props> = ({ payload }) => {
     return (
         <Suspense fallback={<Spinner size="large" />}>
             {showSpinner && <Spinner size="large" />}
-            {data?.length ? data.map((pr) => (
+            {data?.length ? data?.map((pr) => (
                 <Box
                     padding="space.200"
                     backgroundColor='color.background.information'
