@@ -21,7 +21,7 @@ import {
 } from './keys';
 import { GetPullRequestPayload } from '../../types';
 import { Services } from '../../services/Services';
-import { FrontJiraRequesterStrategy } from '../../services/FrontJiraRequester';
+import { FrontJiraRequesterStrategy } from '../../services/FrontJiraRequesterStrategy';
 
 Services.buildIssue(new FrontJiraRequesterStrategy());
 const staleTime = 5000;

@@ -11,7 +11,7 @@ import {
 } from '../constants';
 import { AuthPayload, Issue } from '../types';
 import { Services } from '../services/Services';
-import { BackJiraRequesterStrategy } from '../services/BackJiraRequester';
+import { BackJiraRequesterStrategy } from '../services/BackJiraRequesterStrategy';
 
 const resolver = new Resolver();
 const requesterStrategy = new BackJiraRequesterStrategy();
