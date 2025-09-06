@@ -1,7 +1,7 @@
 import type { RequestProductMethod } from '@forge/api'
 import { Issue } from "../types";
 import { IssueTransition } from "../types/IssueTransition";
-import { IRouteBuilder } from "./types";
+import { IRequester } from "./types";
 
 export type JiraRequest =
     ((restPath: string, fetchOptions?: RequestInit) => Promise<Response>) |
@@ -11,15 +11,12 @@ export type JiraRequest =
 export class IssueService {
     private url = '/rest/api/3/issue';
     private DONE = 'Done';
-    private request: JiraRequest;
-    private routeBuilder: IRouteBuilder;
+    private requester: IRequester;
 
     constructor(
-        request: JiraRequest,
-        routeBuilder: IRouteBuilder,
+        routeBuilder: IRequester,
     ) {
-        this.request = request;
-        this.routeBuilder = routeBuilder;
+        this.requester = routeBuilder;
     }
 
     private get headers() {
@@ -32,10 +29,6 @@ export class IssueService {
             method: 'GET',
             headers: this.headers,
         }
-    }
-
-    private buildRoute(r: string): any {
-        return this.routeBuilder.buildRoute(r);
     }
     
     private preparePostMethod(body: any) {
@@ -50,15 +43,14 @@ export class IssueService {
     }
 
     async getIssue(id: string): Promise<Issue> {
-        const response = await this.request(this.buildRoute(`${this.url}/${id}`), this.getMethod);
-        const issue = await response.json();
+        const issue = await this.requester.request<Issue>(`${this.url}/${id}`, this.getMethod);
         console.log(issue);
         return issue;
     }
 
     async getTransitions(id: string): Promise<IssueTransition[]> {
-        const response = await this.request(this.buildRoute(`${this.url}/${id}/transitions`), this.getMethod);
-        const { transitions } = await response.json();
+        const response = await this.requester.request<{ transitions: IssueTransition[] }>(`${this.url}/${id}/transitions`, this.getMethod);
+        const { transitions } = response;
         return transitions;
     }
 
@@ -67,9 +59,7 @@ export class IssueService {
         const doneTransition = transitions.find((t: any) => t?.name === this.DONE && t.isAvailable);
         if (doneTransition) {
             const props = this.preparePostMethod({ transition: { id: doneTransition.id } });
-            const response = await this.request(this.buildRoute(`${this.url}/${id}/transitions`), props);
-            const result = await response.json();
-            return result;
+            return this.requester.request(`${this.url}/${id}/transitions`, props);
         }
     }
 }

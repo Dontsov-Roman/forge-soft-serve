@@ -21,9 +21,9 @@ import {
 } from './keys';
 import { GetPullRequestPayload } from '../../types';
 import { Services } from '../../services/Services';
-import { FrontRouteBuilder } from '../../services/FrontRouteBuilder';
+import { FrontJiraRequester } from '../../services/FrontJiraRequester';
 
-Services.buildIssue(requestJira, new FrontRouteBuilder());
+Services.buildIssue(new FrontJiraRequester());
 const staleTime = 5000;
 export const getRepositoriesOption = () => queryOptions({
     queryKey: [GET_REPOSITORIES_KEY],

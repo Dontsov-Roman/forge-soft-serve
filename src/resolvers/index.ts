@@ -12,7 +12,7 @@ import {
 } from '../constants';
 import { AuthPayload, Issue } from '../types';
 import { Services } from '../services/Services';
-import { BackRouteBuilder } from '../services/BackRouteBuilder';
+import { BackJiraRequester } from '../services/BackJiraRequester';
 
 const resolver = new Resolver();
 
@@ -45,9 +45,8 @@ resolver.define(SET_GIT_HUB_TOKEN_DEF, async (req: { payload: AuthPayload }) => 
 });
 
 resolver.define(GET_ISSUE_DEF, async (req: { payload: { key: string } }): Promise<Issue> => {
-  const routeBuilder = new BackRouteBuilder();
-  const request = api.asApp().requestJira;
-  await Services.buildIssue(request, routeBuilder);
+  const requester = new BackJiraRequester()
+  await Services.buildIssue(requester);
   const issueService = await Services.getIssueService();
   console.log(req.payload);
   

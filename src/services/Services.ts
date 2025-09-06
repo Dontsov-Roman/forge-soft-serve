@@ -1,6 +1,6 @@
 import { GitService } from "./github";
 import { IssueService, JiraRequest } from "./issues";
-import { IRouteBuilder } from "./types";
+import { IRequester } from "./types";
 
 export class Services {
     static githubService: GitService;
@@ -9,7 +9,7 @@ export class Services {
     static request: JiraRequest;
     static organization: string;
     static version: string;
-    static routeBuilbder: IRouteBuilder;
+    static requester: IRequester;
 
     static async createGitService() {
         if (!Services.githubService) {
@@ -20,7 +20,7 @@ export class Services {
 
     static async createIssueService() {
         if (!Services.issueService) {
-            Services.issueService = new IssueService(Services.request, Services.routeBuilbder);
+            Services.issueService = new IssueService(Services.requester);
         }
     }
 
@@ -35,11 +35,9 @@ export class Services {
     }
 
     static async buildIssue(
-        request: JiraRequest,
-        routeBuilbder: IRouteBuilder,
+        requester: IRequester,
     ) {
-        Services.request = request;
-        Services.routeBuilbder = routeBuilbder;
+        Services.requester = requester;
         Services.createIssueService()
     }
 

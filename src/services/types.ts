@@ -1,5 +1,4 @@
-import type { Route } from '@forge/api';
 
-export interface IRouteBuilder {
-    buildRoute: (url: string | TemplateStringsArray, ...values: any[]) => string | Route;
+export interface IRequester {
+    request<T>(url: string | TemplateStringsArray, headers?: Record<string, any>): Promise<T>;
 }
