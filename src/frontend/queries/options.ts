@@ -53,11 +53,11 @@ export const getIssueOption = (key: string) => queryOptions<Issue>({
 
 export const getIssueTransitionOption = (key: string) => queryOptions<IssueTransition[]>({
     queryKey: [GET_ISSUE_TRANSITION_KEY, key],
-    queryFn: async () => {
-        await Services.buildIssue(new FrontJiraRequesterStrategy());
-        return (await Services.getIssueService()).getTransitions(key)
-    },
-    // queryFn: async () => invoke(GET_ISSUE_TRANSITIONS_DEF, { key }),
+    // queryFn: async () => {
+    //     await Services.buildIssue(new FrontJiraRequesterStrategy());
+    //     return (await Services.getIssueService()).getTransitions(key)
+    // },
+    queryFn: async () => invoke(GET_ISSUE_TRANSITIONS_DEF, { key }),
     staleTime,
 });
 
@@ -88,15 +88,15 @@ export const moveIssueToDoneMutation = () => mutationOptions({
 
 export const changeIssueStatusMutation = () => mutationOptions({
     mutationKey: [CHANGE_ISSUE_STATUS_KEY],
-    // mutationFn: async (payload: { key: string, status: string }) => {
+    // mutationFn: async (payload: { key: string | number, status: string }) => {
     //     await Services.buildIssue(new FrontJiraRequesterStrategy());
     //     const issueService = await Services.getIssueService(); 
-    //     await issueService.changeStatus(payload.key, payload.status);
-    //     return key;
+    //     await issueService.changeIssueStatus(payload.key, payload.status);
+    //     return payload;
     // },
     mutationFn: async(payload: { key: string | number, status: string }) => {
         await invoke(CHANGE_ISSUE_STATUS_DEF, payload);
-        return payload.key;
+        return payload;
     }
 });
 

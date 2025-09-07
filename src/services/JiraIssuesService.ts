@@ -43,7 +43,7 @@ export class JiraIssuesService {
         return this.requestStrategy.getTransitions(id, this.getMethod);
     }
 
-    async changeIssueStatus(id: string, transitionId: string | number) {
+    async changeIssueStatus(id: string | number, transitionId: string | number) {
         const props = this.preparePostMethod({ transition: { id: transitionId } });
         return this.requestStrategy.changeIssueStatus(id, props);
     }

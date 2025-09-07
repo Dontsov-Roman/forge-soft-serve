@@ -33,8 +33,9 @@ export const IssueItem: React.FC<Props> = ({
             </Inline>
             {
                 onChangeStatus &&
-                transitionOptions.length &&
-                <Select onChange={onChangeStatus} options={transitionOptions} defaultValue={issueStatus} />
+                transitionOptions.length ?
+                    <Select onChange={onChangeStatus} options={transitionOptions} defaultValue={issueStatus} /> :
+                    null
             }
             {
                 showSummary &&
