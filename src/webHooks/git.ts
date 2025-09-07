@@ -15,7 +15,6 @@ interface WebTriggerResponse {
 
 const requesterStrategy = new BackJiraRequesterStrategy();
 
-
 const RESPONSE: Record<string, WebTriggerResponse> = {
   OK: { statusCode: 200, body: 'Ticket closed' },
   NO_BODY: { statusCode: 400, body: "Missing request body" },

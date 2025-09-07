@@ -7,6 +7,7 @@ import {
     GET_PULL_REQUESTS_DEF,
     GET_REPOSITORIES_DEF,
     MERGE_PULL_REQUESTS_DEF,
+    MOVE_ISSUE_TO_DONE_DEF,
     REVIEW_PULL_REQUESTS_DEF,
     SET_GIT_HUB_TOKEN_DEF,
 } from '../../constants';
@@ -23,6 +24,7 @@ import {
 import { GetPullRequestPayload } from '../../types';
 import { Services } from '../../services/Services';
 import { FrontJiraRequesterStrategy } from '../../services/FrontJiraRequesterStrategy';
+import { IssueTransition } from '../../types/IssueTransition';
 
 const staleTime = 5000;
 export const getRepositoriesOption = () => queryOptions({
@@ -41,16 +43,19 @@ export const getIssueOption = (key: string) => queryOptions<Issue>({
     queryKey: [GET_ISSUE_KEY, key],
     // queryFn: async () => {
     //     await Services.buildIssue(new FrontJiraRequesterStrategy());
-    //     (await Services.getIssueService()).getIssue(key)
+    //     return (await Services.getIssueService()).getIssue(key)
     // },
     queryFn: async () => invoke(GET_ISSUE_DEF, { key }),
     staleTime,
 });
 
-export const getIssueTransitionOption = (key: string) => queryOptions({
+export const getIssueTransitionOption = (key: string) => queryOptions<IssueTransition[]>({
     queryKey: [GET_ISSUE_TRANSITION_KEY, key],
-    // queryFn: async () => (await Services.getIssueService()).getTransitions(key),
-    queryFn: async () => invoke(GET_ISSUE_TRANSITIONS_DEF, { key }),
+    queryFn: async () => {
+        await Services.buildIssue(new FrontJiraRequesterStrategy());
+        return (await Services.getIssueService()).getTransitions(key)
+    },
+    // queryFn: async () => invoke(GET_ISSUE_TRANSITIONS_DEF, { key }),
     staleTime,
 });
 
@@ -66,12 +71,16 @@ export const reviewPullRequestMutation = () => mutationOptions({
 
 export const moveIssueToDoneMutation = () => mutationOptions({
     mutationKey: [MOVE_ISSUE_TO_DONE_KEY],
+    // mutationFn: async (key: string) => {
+    //     await Services.buildIssue(new FrontJiraRequesterStrategy());
+    //     const issueService = await Services.getIssueService(); 
+    //     await issueService.moveToDone(key);
+    //     return key;
+    // },
     mutationFn: async (key: string) => {
-        await Services.buildIssue(new FrontJiraRequesterStrategy());
-        const issueService = await Services.getIssueService(); 
-        await issueService.moveToDone(key);
+        await invoke(MOVE_ISSUE_TO_DONE_DEF, { key });
         return key;
-    },
+    }
 });
 
 export const authMutation = () => mutationOptions({

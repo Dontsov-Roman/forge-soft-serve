@@ -25,9 +25,11 @@ export class GitService {
         this.octokit = new Octokit({ auth });
     }
 
-    setToken(auth: string) {
+    async setToken(auth: string) {
         this.octokit = new Octokit({ auth });
-        kvs.setSecret(GIT_HUB_STORE_KEY, auth);
+        await kvs.setSecret(GIT_HUB_STORE_KEY, auth);
+        console.log('token applied');
+        return true;
     }
 
     getRepositories = async (): Promise<GitRepository[]> => {

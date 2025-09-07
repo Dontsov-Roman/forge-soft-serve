@@ -1,5 +1,5 @@
 import React, { Suspense, useCallback } from 'react';
-import { Box, LoadingButton, Inline, Spinner, Stack, Button, EmptyState, ButtonGroup } from '@forge/react';
+import { Box, LoadingButton, Inline, Spinner, Stack, Button, EmptyState, ButtonGroup, replaceUnsupportedDocumentNodes } from '@forge/react';
 import { GetPullRequestPayload } from '../../../types';
 import { PullRequest } from '../shared/PullRequest';
 import { Issue } from '../issue/Issue';
@@ -10,7 +10,7 @@ type Props = {
     payload: GetPullRequestPayload;
 };
 
-export const PullRequestList: React.FC<Props> = ({ payload }) => {
+export const PullRequestList: React.FC<Props> = React.memo(({ payload }) => {
     const {
         showSpinner,
         data,
@@ -21,6 +21,7 @@ export const PullRequestList: React.FC<Props> = ({ payload }) => {
         onMerge,
         onApprove,
     } = useGit(payload);
+    console.log('pr list', data);
 
     const openModal = useCallback(() => setModalOpen(true), [setModalOpen]);
     const closeModal = useCallback(() => setModalOpen(false), [setModalOpen]);
@@ -74,4 +75,6 @@ export const PullRequestList: React.FC<Props> = ({ payload }) => {
             {!showSpinner && !data?.length ? <EmptyState header='No Pull Requests' /> : null}
         </Suspense>
     );
-};
+}, (
+    { payload: { owner: prevOwner, repo: prevRepo } },
+    { payload: { owner, repo } }) => prevOwner === owner && prevRepo === repo);
