@@ -1,62 +1,23 @@
 import { invoke } from '@forge/bridge';
 import { mutationOptions, queryOptions } from '@tanstack/react-query'
-import { AuthPayload, CreateReviewPullRequest, GitPullRequest, GitRepository, Issue, MergePullRequestPayload } from '../../types';
+import { Issue } from '../../../types';
 import {
     CHANGE_ISSUE_STATUS_DEF,
     GET_ISSUE_DEF,
     GET_ISSUE_TRANSITIONS_DEF,
-    GET_PULL_REQUESTS_DEF,
-    GET_REPOSITORIES_DEF,
-    MERGE_PULL_REQUESTS_DEF,
     MOVE_ISSUE_TO_DONE_DEF,
-    REVIEW_PULL_REQUESTS_DEF,
-    SET_GIT_HUB_TOKEN_DEF,
-} from '../../constants';
+} from '../../../constants';
 import {
-    AUTH_KEY,
     CHANGE_ISSUE_STATUS_KEY,
     GET_ISSUE_KEY,
     GET_ISSUE_TRANSITION_KEY,
-    GET_PULL_REQUESTS_KEY,
-    GET_REPOSITORIES_KEY,
-    MERGE_PULL_REQUESTS_KEY,
     MOVE_ISSUE_TO_DONE_KEY,
-    REVIEW_PULL_REQUESTS_KEY,
-} from './keys';
-import { GetPullRequestPayload } from '../../types';
-import { Services } from '../../services/Services';
-import { FrontJiraRequesterStrategy } from '../../services/FrontJiraRequesterStrategy';
-import { IssueTransition } from '../../types/IssueTransition';
+} from '../../keys';
+import { Services } from '../../../services/Services';
+import { FrontJiraRequesterStrategy } from '../../../services/FrontJiraRequesterStrategy';
+import { IssueTransition } from '../../../types/IssueTransition';
 
 const staleTime = 5000;
-
-export const authMutation = () => mutationOptions({
-    mutationKey: [AUTH_KEY],
-    mutationFn: (payload: AuthPayload) => invoke(SET_GIT_HUB_TOKEN_DEF, payload),
-});
-
-export const getRepositoriesOption = () => queryOptions({
-    queryKey: [GET_REPOSITORIES_KEY],
-    queryFn: () => invoke<GitRepository[]>(GET_REPOSITORIES_DEF),
-    staleTime,
-});
-
-export const getPullRequestsOption = (payload: GetPullRequestPayload) => queryOptions({
-    queryKey: [GET_PULL_REQUESTS_KEY, payload.owner, payload.repo],
-    queryFn: () => invoke<GitPullRequest[]>(GET_PULL_REQUESTS_DEF, payload),
-    staleTime,
-});
-
-export const mergePullRequestMutation = () => mutationOptions({
-    mutationKey: [MERGE_PULL_REQUESTS_KEY],
-    mutationFn: (payload: MergePullRequestPayload) => invoke(MERGE_PULL_REQUESTS_DEF, payload),
-});
-
-export const reviewPullRequestMutation = () => mutationOptions({
-    mutationKey: [REVIEW_PULL_REQUESTS_KEY],
-    mutationFn: (payload: CreateReviewPullRequest) => invoke(REVIEW_PULL_REQUESTS_DEF, payload),
-});
-
 
 export const getIssueOption = (key: string) => queryOptions<Issue>({
     queryKey: [GET_ISSUE_KEY, key],

@@ -1,29 +1,10 @@
-import React, { createContext, useCallback, useRef, useState } from 'react';
+import React, { createContext } from 'react';
 import { SectionMessage } from '@forge/react';
-
-type Appearance = 'information' | 'warning' | 'error' | 'success' | 'discovery';
-
-type Align = 'top' | 'bottom';
-
-type DefaultMainHookProps = {
-    align?: Align;
-    timeout?: number;
-};
-
-type ProviderProps = DefaultMainHookProps & {
-    children: React.ReactNode;
-};
-
-type ShowMessageProps = {
-    message: string;
-    appearance: Appearance;
-    align?: Align;
-};
-
-type ContextValue = ShowMessageProps & {
-    isVisible: boolean;
-    showMessage: (props: ShowMessageProps) => void;
-};
+import {
+    ContextValue,
+    ProviderProps,
+} from './types'
+import { useMessageWrapper } from './useMessageWrapper';
 
 export const MessageContext = createContext<ContextValue>({
     message: '',
@@ -33,31 +14,6 @@ export const MessageContext = createContext<ContextValue>({
     showMessage: () => { },
 });
 
-const useMessageWrapper = ({ timeout, align: defaultAlign = 'bottom' }: DefaultMainHookProps) => {
-    const ref = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const [isVisible, setVisible] = useState(false);
-    const toggleMessage = useCallback(() => {
-        setVisible(true);
-        if (ref.current)
-            clearTimeout(ref.current);
-        ref.current = setTimeout(() => {
-            setVisible(false);
-            ref.current = null;
-        }, timeout);
-    }, []);
-
-    const [appearance, setAppearance] = useState<Appearance>('information');
-    const [message, setMessage] = useState('');
-    const [align, setAlign] = useState<Align>(defaultAlign);
-    const showMessage = useCallback(({ message, appearance = 'information', align }: ShowMessageProps) => {
-        setAppearance(appearance);
-        setMessage(message);
-        if (align) setAlign(align);
-        toggleMessage();
-    }, []);
-
-    return { showMessage, isVisible, appearance, message, align };
-};
 
 export const MessageProvider: React.FC<ProviderProps> = React.memo(({ children, timeout, align }) => {
     const value = useMessageWrapper({ timeout, align });

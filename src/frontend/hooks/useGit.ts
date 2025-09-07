@@ -2,15 +2,17 @@ import { useCallback, useState } from "react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { getIssueKey } from "../../utils/getIssueKey";
-import { GET_ISSUE_KEY, GET_PULL_REQUESTS_KEY } from "../queries/keys";
+import { GET_ISSUE_KEY, GET_PULL_REQUESTS_KEY } from "../keys";
 import { GetPullRequestPayload, GitPullRequest, PullRequestEventEnum } from "../../types";
 import {
     getIssueOption,
-    getPullRequestsOption,
-    mergePullRequestMutation,
     moveIssueToDoneMutation,
+} from "../components/issue/queries";
+import {
     reviewPullRequestMutation,
-} from "../queries/options";
+    mergePullRequestMutation,
+    getPullRequestsOption,
+} from "../components/repo/queries"
 import { useMessage } from "./useMessage";
 
 export const useGit = (payload: GetPullRequestPayload) => {

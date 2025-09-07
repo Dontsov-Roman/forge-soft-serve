@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from "react";
 import { BadgeProps, OptionProps } from "@forge/react/out/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { changeIssueStatusMutation, getIssueOption, getIssueTransitionOption } from '../queries/options';
-import { GET_ISSUE_KEY, GET_ISSUE_TRANSITION_KEY } from "../queries/keys";
-import { useMessage } from "../hooks";
+import { changeIssueStatusMutation, getIssueOption, getIssueTransitionOption } from './queries';
+import { GET_ISSUE_KEY, GET_ISSUE_TRANSITION_KEY } from "../../keys";
+import { useMessage } from "../../hooks";
 
 const colorMap: Record<string, BadgeProps['appearance']> = {
     green: 'added',

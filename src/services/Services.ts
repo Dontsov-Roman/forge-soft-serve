@@ -14,12 +14,14 @@ export class Services {
         if (!Services.githubService) {
             Services.githubService = new GitService(Services.organization, Services.version);
             await Services.githubService.init();
+            console.log('Github service created');
         }
     }
 
     static async createIssueService() {
         if (!Services.issueService) {
             Services.issueService = new JiraIssuesService(Services.requestStrategy);
+            console.log('Issue service created');
         }
     }
 
@@ -44,7 +46,6 @@ export class Services {
         return Services.githubService;
     }
 
-    
     static async getIssueService(): Promise<JiraIssuesService>  {
         await Services.createIssueService();
         return Services.issueService;

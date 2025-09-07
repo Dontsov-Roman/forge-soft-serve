@@ -13,14 +13,6 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "outDir": "dist",
-    "baseUrl": "./",
-    "paths": {
-      "@shared-components": ["src/frontend/components/shared"],
-      "@constants": ["src/constants"],
-      "@hooks": ["src/frontend/hooks"],
-      "@types": ["src/types"],
-      "@query-keys": ["./src/frontend/queries/keys.ts"]
-    }
   },
   "include": ["src"],
 }

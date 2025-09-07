@@ -2,7 +2,7 @@ import React, { Suspense, useEffect } from 'react';
 import { EmptyState, Spinner, Stack } from '@forge/react';
 import { useQuery } from '@tanstack/react-query';
 import { RepoItem } from '../shared/RepoItem';
-import { getRepositoriesOption } from '../../queries/options';
+import { getRepositoriesOption } from './queries';
 import { PullRequestList } from './PullRequestList';
 import { useMessage } from '../../hooks';
 

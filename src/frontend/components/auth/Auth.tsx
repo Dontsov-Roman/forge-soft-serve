@@ -2,8 +2,8 @@ import React from 'react';
 import { Box } from '@forge/react';
 import { AuthPayload } from '../../../types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { authMutation } from '../../queries/options';
-import { GET_ISSUE_KEY, GET_ISSUE_TRANSITION_KEY, GET_PULL_REQUESTS_KEY, GET_REPOSITORIES_KEY } from '../../queries/keys';
+import { authMutation } from './queries';
+import { GET_ISSUE_KEY, GET_ISSUE_TRANSITION_KEY, GET_PULL_REQUESTS_KEY, GET_REPOSITORIES_KEY } from '../../keys';
 import { useMessage } from "../../hooks";
 import { AuthForm } from '../shared/AuthForm';
 

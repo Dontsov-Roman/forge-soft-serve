@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { Box, Spinner } from "@forge/react";
 import { getIssueKey } from "../../../utils/getIssueKey";
 import { IssueItem } from "../shared/IssueItem";
-import { useIssue } from "../../hooks/useIssue";
+import { useIssue } from "./useIssue";
 
 type Props = {
     title: string;
