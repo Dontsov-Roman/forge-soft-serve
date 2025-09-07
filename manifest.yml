@@ -45,14 +45,20 @@ app:
   id: ari:cloud:ecosystem::app/e241775e-d7de-4788-94f2-983969856a80
 permissions:
   scopes:
+    - read:issue.transition:jira
+    - read:issue-type-transition:jira
+    - read:issue-type-scheme:jira
+    - read:issue:jira
+    - write:issue:jira
     - manage:jira-project
     - read:status:jira
-    - read:issue.transition:jira
     - read:field-configuration:jira
     - write:field-configuration:jira
     - read:jira-work
     - write:jira-work
     - storage:app
+    - read:servicedesk-request
+    - write:servicedesk-request
   external:
     images:
       - 'https://secure.gravatar.com/avatar/*'
@@ -60,8 +66,6 @@ permissions:
       - 'https://avatars.githubusercontent.com/u/*'
       - 'https://avatars.githubusercontent.com'
     fetch:
-      client:
-        - remote: git-api
       backend:
         - remote: git-api
 remotes:

@@ -15,7 +15,7 @@ const colorMap: Record<string, BadgeProps['appearance']> = {
     yellow: 'primary',
 };
 
-export const Issue: React.FC<Props> = ({ title }) => {
+export const Issue: React.FC<Props> = React.memo(({ title }) => {
     const { data, isLoading } = useQuery(getIssueOption(getIssueKey(title)));
     const { data: transitions } = useQuery(getIssueTransitionOption(getIssueKey(title)));
     console.log(transitions);
@@ -43,4 +43,4 @@ export const Issue: React.FC<Props> = ({ title }) => {
             </Box>
         </Suspense>
     );
-};
+});
