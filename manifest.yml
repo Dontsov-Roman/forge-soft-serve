@@ -47,15 +47,6 @@ permissions:
   scopes:
     - read:jira-work
     - write:jira-work
-    - read:issue.transition:jira
-    - read:issue-type-transition:jira
-    - read:issue-type-scheme:jira
-    - read:issue:jira
-    - write:issue:jira
-    - manage:jira-project
-    - read:status:jira
-    - read:field-configuration:jira
-    - write:field-configuration:jira
     - storage:app
   external:
     images:

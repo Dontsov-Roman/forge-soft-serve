@@ -1,4 +1,5 @@
 import Resolver from '@forge/resolver';
+
 import {
   CHANGE_ISSUE_STATUS_DEF,
   GET_ISSUE_DEF,
@@ -83,3 +84,4 @@ resolver.define(CHANGE_ISSUE_STATUS_DEF, async (req: { payload: { key: string, s
 });
 
 export const handler = resolver.getDefinitions();
+
