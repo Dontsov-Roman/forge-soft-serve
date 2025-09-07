@@ -1,6 +1,6 @@
 import { Octokit } from "octokit";
 import { kvs } from '@forge/kvs'
-import { CreateReviewPullRequest, GetPullRequestPayload, GitPullRequest, GitRepository, MergePullRequestPayload } from "../types";
+import { CreateReviewPullRequest, GetPullRequestPayload, GitPullRequest, GitRepository, MergePullRequestPayload, MergePullRequestResponse } from "../types";
 import { GIT_HUB_STORE_KEY } from "../constants";
 
 export class GitService {
@@ -74,7 +74,7 @@ export class GitService {
         pull_number,
         commit_title,
         commit_message,
-    }: MergePullRequestPayload): Promise<{ data: { message: string; }}> => {
+    }: MergePullRequestPayload): Promise<{ data: MergePullRequestResponse}> => {
         commit_title = commit_title ?? `Merge PR #${pull_number}`;
         commit_message = commit_message ?? `Merge PR #${pull_number}`;
         const result = await this.octokit?.request(`PUT /repos/${owner}/${repo}/pulls/${pull_number}/merge`, {

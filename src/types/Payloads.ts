@@ -16,6 +16,11 @@ export type MergePullRequestPayload = GetPullRequestPayload & {
     commit_title?: string;
     commit_message?: string;
 }
+export type MergePullRequestResponse = {
+    message: string;
+    merged: boolean;
+    sha: string;
+};
 export type CreateReviewPullRequest = GetPullRequestPayload & {
     pull_number: number;
     event: PullRequestEventEnum;

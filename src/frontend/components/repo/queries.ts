@@ -1,6 +1,6 @@
 import { invoke } from '@forge/bridge';
 import { mutationOptions, queryOptions } from '@tanstack/react-query'
-import { CreateReviewPullRequest, GitPullRequest, GitRepository, MergePullRequestPayload } from '../../../types';
+import { CreateReviewPullRequest, GitPullRequest, GitRepository, MergePullRequestPayload, MergePullRequestResponse } from '../../../types';
 import {
     GET_PULL_REQUESTS_DEF,
     GET_REPOSITORIES_DEF,
@@ -31,7 +31,7 @@ export const getPullRequestsOption = (payload: GetPullRequestPayload) => queryOp
 
 export const mergePullRequestMutation = () => mutationOptions({
     mutationKey: [MERGE_PULL_REQUESTS_KEY],
-    mutationFn: (payload: MergePullRequestPayload) => invoke(MERGE_PULL_REQUESTS_DEF, payload),
+    mutationFn: (payload: MergePullRequestPayload): Promise<MergePullRequestResponse> => invoke(MERGE_PULL_REQUESTS_DEF, payload),
 });
 
 export const reviewPullRequestMutation = () => mutationOptions({

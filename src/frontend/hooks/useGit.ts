@@ -28,7 +28,7 @@ export const useGit = (payload: GetPullRequestPayload) => {
     const { mutate: reviewPullRequest, isPending: isAprrovePending } = useMutation({
         ...reviewPullRequestMutation(),
         onSuccess: () => showMessage({ message: 'Pr approved', appearance: 'information' }),
-        onError: (err) => showMessage({ message: err.message, appearance: 'error' }),
+        onError: (err) => showMessage({ message: err.message, appearance: 'discovery' }),
     });
 
     const { mutate: closeIssue } = useMutation({
@@ -42,15 +42,14 @@ export const useGit = (payload: GetPullRequestPayload) => {
         ...mergePullRequestMutation(),
         onSuccess: (data, payload) => {
             // closeIssue(getIssueKey(payload.title));
-            console.log(data);
             queryClient.invalidateQueries({ queryKey: [GET_PULL_REQUESTS_KEY] });
-            showMessage({ message: 'PR merged succesfully', appearance: 'success' })
+            showMessage({ message: data.message, appearance: data.merged ? 'success': 'information' })
         },
     });
 
     const onMerge = useCallback(async (pr: GitPullRequest) => {
         mergePr({ repo: pr.base.repo.name, owner: pr.base.repo.owner.login, pull_number: pr.number, title: pr.title });
-    }, [mergePr, closeIssue]);
+    }, [mergePr]);
 
     const onApprove = useCallback(async (pr: GitPullRequest) => {
         reviewPullRequest({

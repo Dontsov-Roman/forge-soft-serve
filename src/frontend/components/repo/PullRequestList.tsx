@@ -28,7 +28,7 @@ export const PullRequestList: React.FC<Props> = React.memo(({ payload }) => {
     return (
         <Suspense fallback={<Spinner size="large" />}>
             {showSpinner && <Spinner size="large" />}
-            {data?.length ? data?.map((pr) => (
+            {!showSpinner && data?.length ? data?.map((pr) => (
                 <Box
                     padding="space.200"
                     backgroundColor='color.background.information'
