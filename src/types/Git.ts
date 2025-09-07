@@ -41,3 +41,9 @@ export type GitPullRequest = ID & {
         repo: GitRepository;
     };
 };
+
+export type GitHook = {
+    action: string;
+    number: number;
+    pull_request: GitPullRequest;
+}

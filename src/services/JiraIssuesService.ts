@@ -47,9 +47,11 @@ export class JiraIssuesService {
     async moveToDone(id: string) {
         const transitions = await this.getTransitions(id);
         const doneTransition = transitions.find((t: any) => t?.name === this.DONE && t.isAvailable);
+        console.log(doneTransition);
         if (doneTransition) {
             const props = this.preparePostMethod({ transition: { id: doneTransition.id } });
             return this.requestStrategy.moveToDone(id, props);
         }
+        return false;
     }
 }

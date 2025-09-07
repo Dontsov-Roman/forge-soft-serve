@@ -1,2 +1,3 @@
 import { handler } from './resolvers';
-export { handler };
+import { gitMergeHook } from './webHooks/git';
+export { handler, gitMergeHook };

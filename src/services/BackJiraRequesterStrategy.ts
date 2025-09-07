@@ -14,6 +14,7 @@ export class BackJiraRequesterStrategy implements IIssueRequesterStrategy {
         return transitions;
     }
     async moveToDone(id: string, headers?: Headers) {
-        asApp().requestJira(route`/rest/api/3/issue/${id}/transitions`, headers);
+        const result = await asApp().requestJira(route`/rest/api/3/issue/${id}/transitions`, headers);
+        return result.ok;
     }
 }

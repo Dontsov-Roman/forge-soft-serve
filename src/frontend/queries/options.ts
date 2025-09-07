@@ -62,7 +62,10 @@ export const reviewPullRequestMutation = () => mutationOptions({
 
 export const moveIssueToDoneMutation = () => mutationOptions({
     mutationKey: [MOVE_ISSUE_TO_DONE_KEY],
-    mutationFn: async (key: string) => (await Services.getIssueService()).moveToDone(key),
+    mutationFn: async (key: string) => {
+        (await Services.getIssueService()).moveToDone(key);
+        return key;
+    },
 });
 
 export const authMutation = () => mutationOptions({

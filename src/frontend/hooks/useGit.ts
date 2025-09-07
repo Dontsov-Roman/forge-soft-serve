@@ -39,7 +39,8 @@ export const useGit = (payload: GetPullRequestPayload) => {
     const { mutate: mergePr, isPending: mergeInProgress } = useMutation({
         ...mergePullRequestMutation(),
         onSuccess: (data, payload) => {
-            closeIssue(getIssueKey(payload.title));
+            // closeIssue(getIssueKey(payload.title));
+            console.log(data);
             queryClient.invalidateQueries({ queryKey: [GET_PULL_REQUESTS_KEY] });
             showMessage({ message: 'PR merged succesfully', appearance: 'success' })
         },

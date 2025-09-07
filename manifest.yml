@@ -1,4 +1,9 @@
 modules:
+  webtrigger:
+    - key: github-webhook
+      function: github-hook
+      events:
+        - webtrigger
   jira:adminPage:
     - key: forge-soft-serve-auth
       resource: auth
@@ -23,6 +28,8 @@ modules:
   function:
     - key: resolver
       handler: index.handler
+    - key: github-hook
+      handler: index.gitMergeHook
 resources:
   - key: auth
     path: src/frontend/auth.tsx
