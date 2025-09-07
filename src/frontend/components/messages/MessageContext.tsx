@@ -1,6 +1,5 @@
-import React, { createContext, useCallback, useState } from 'react';
+import React, { createContext, useCallback, useRef, useState } from 'react';
 import { SectionMessage } from '@forge/react';
-import { useSimpleTimeout } from '../../hooks/useSimpleTimeout';
 
 type Appearance = 'information' | 'warning' | 'error' | 'success' | 'discovery';
 
@@ -35,7 +34,19 @@ export const MessageContext = createContext<ContextValue>({
 });
 
 const useMessageWrapper = ({ timeout, align: defaultAlign = 'bottom' }: DefaultMainHookProps) => {
-    const { enabled: isVisible, onClick: toggleMessage } = useSimpleTimeout(timeout);
+    console.log('useMessageWrapper');
+    const ref = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const [isVisible, setVisible] = useState(false);
+    const toggleMessage = useCallback(() => {
+        setVisible(true);
+        if (ref.current)
+            clearTimeout(ref.current);
+        ref.current = setTimeout(() => {
+            setVisible(false);
+            ref.current = null;
+        }, timeout);
+    }, []);
+
     const [appearance, setAppearance] = useState<Appearance>('information');
     const [message, setMessage] = useState('');
     const [align, setAlign] = useState<Align>(defaultAlign);
@@ -44,13 +55,13 @@ const useMessageWrapper = ({ timeout, align: defaultAlign = 'bottom' }: DefaultM
         setMessage(message);
         if (align) setAlign(align);
         toggleMessage();
-    }, [toggleMessage, setMessage, setAppearance]);
+    }, []);
 
     return { showMessage, isVisible, appearance, message, align };
 };
 
-export const MessageProvider: React.FC<ProviderProps> = ({ children, ...rest }) => {
-    const value = useMessageWrapper(rest);
+export const MessageProvider: React.FC<ProviderProps> = React.memo(({ children, timeout, align }) => {
+    const value = useMessageWrapper({ timeout, align });
     return (
         <MessageContext.Provider value={value}>
             {value.isVisible && value.align === 'top' && <SectionMessage appearance={value.appearance}>{value.message}</SectionMessage>}
@@ -58,5 +69,5 @@ export const MessageProvider: React.FC<ProviderProps> = ({ children, ...rest }) 
             {value.isVisible && value.align === 'bottom' && <SectionMessage appearance={value.appearance}>{value.message}</SectionMessage>}
         </MessageContext.Provider>
     );
-};
+}, ({ align: prevAlign }, { align }) => align === prevAlign);
 
