@@ -1,6 +1,7 @@
 import Resolver from '@forge/resolver';
 import {
   GET_ISSUE_DEF,
+  GET_ISSUE_TRANSITIONS_DEF,
   GET_PULL_REQUESTS_DEF,
   GET_REPOSITORIES_DEF,
   GIT_HUB_ORG,
@@ -12,6 +13,7 @@ import {
 import { AuthPayload, Issue } from '../types';
 import { Services } from '../services/Services';
 import { BackJiraRequesterStrategy } from '../services/BackJiraRequesterStrategy';
+import { IssueTransition } from '../types/IssueTransition';
 
 const resolver = new Resolver();
 const requesterStrategy = new BackJiraRequesterStrategy();
@@ -48,6 +50,12 @@ resolver.define(GET_ISSUE_DEF, async (req: { payload: { key: string } }): Promis
   const issueService = await Services.getIssueService();
   
   return issueService.getIssue(req.payload.key);
+});
+
+
+resolver.define(GET_ISSUE_TRANSITIONS_DEF, async (req: { payload: { key: string } }): Promise<IssueTransition[]> => {
+  const issueService = await Services.getIssueService();
+  return issueService.getTransitions(req.payload.key);
 });
 
 export const handler = resolver.getDefinitions();

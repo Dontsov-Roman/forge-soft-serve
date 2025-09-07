@@ -8,13 +8,14 @@ export class BackJiraRequesterStrategy implements IIssueRequesterStrategy {
         const res = await asApp().requestJira(route`/rest/api/3/issue/${key}`, headers);
         return res.json();
     }
-    async getTransitions(id: string, headers?: Headers): Promise<IssueTransition[]> {
-        const response = await asApp().requestJira(route`/rest/api/3/issue/${id}/transitions`, headers);
-        const { transitions } = await response.json();
-        return transitions;
+    async getTransitions(key: string, headers?: Headers): Promise<IssueTransition[]> {
+        const response = await asApp().requestJira(route`/rest/api/3/issue/${key}/transitions`, headers);
+        const result = await response.json();
+        console.log(key, result);
+        return result.transitions;
     }
-    async moveToDone(id: string, headers?: Headers) {
-        const result = await asApp().requestJira(route`/rest/api/3/issue/${id}/transitions`, headers);
+    async moveToDone(key: string, headers?: Headers) {
+        const result = await asApp().requestJira(route`/rest/api/3/issue/${key}/transitions`, headers);
         return result.ok;
     }
 }

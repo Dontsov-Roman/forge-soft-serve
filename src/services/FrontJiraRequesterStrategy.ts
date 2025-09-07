@@ -9,13 +9,13 @@ export class FrontJiraRequesterStrategy implements IIssueRequesterStrategy {
         const res = await requestJira(`${this.url}/${key}`, headers);
         return res.json();
     }
-    async getTransitions(id: string, headers?: Headers): Promise<IssueTransition[]> {
-        const response = await requestJira(`${this.url}/${id}/transitions`, headers);
+    async getTransitions(key: string, headers?: Headers): Promise<IssueTransition[]> {
+        const response = await requestJira(`${this.url}/${key}/transitions`, headers);
         const { transitions } = await response.json();
         return transitions;
     }
-    async moveToDone(id: string, headers?: Headers) {
-        const result = await requestJira(`${this.url}/${id}/transitions`, headers);
+    async moveToDone(key: string, headers?: Headers) {
+        const result = await requestJira(`${this.url}/${key}/transitions`, headers);
         return result.ok;
     }
 }

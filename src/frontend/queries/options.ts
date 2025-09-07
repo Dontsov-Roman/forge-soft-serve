@@ -3,6 +3,7 @@ import { mutationOptions, queryOptions } from '@tanstack/react-query'
 import { AuthPayload, CreateReviewPullRequest, GitPullRequest, GitRepository, Issue, MergePullRequestPayload } from '../../types';
 import {
     GET_ISSUE_DEF,
+    GET_ISSUE_TRANSITIONS_DEF,
     GET_PULL_REQUESTS_DEF,
     GET_REPOSITORIES_DEF,
     MERGE_PULL_REQUESTS_DEF,
@@ -44,9 +45,10 @@ export const getIssueOption = (key: string) => queryOptions<Issue>({
     staleTime,
 });
 
-export const getIssueTransitionOption = (id: string) => queryOptions({
-    queryKey: [GET_ISSUE_TRANSITION_KEY, id],
-    queryFn: async () => (await Services.getIssueService()).getTransitions(id),
+export const getIssueTransitionOption = (key: string) => queryOptions({
+    queryKey: [GET_ISSUE_TRANSITION_KEY, key],
+    // queryFn: async () => (await Services.getIssueService()).getTransitions(key),
+    queryFn: async () => invoke(GET_ISSUE_TRANSITIONS_DEF, { key }),
     staleTime,
 });
 
@@ -63,7 +65,8 @@ export const reviewPullRequestMutation = () => mutationOptions({
 export const moveIssueToDoneMutation = () => mutationOptions({
     mutationKey: [MOVE_ISSUE_TO_DONE_KEY],
     mutationFn: async (key: string) => {
-        (await Services.getIssueService()).moveToDone(key);
+        const issueService = await Services.getIssueService(); 
+        await issueService.moveToDone(key);
         return key;
     },
 });

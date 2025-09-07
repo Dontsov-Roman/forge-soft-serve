@@ -17,6 +17,8 @@ const colorMap: Record<string, BadgeProps['appearance']> = {
 
 export const Issue: React.FC<Props> = ({ title }) => {
     const { data, isLoading } = useQuery(getIssueOption(getIssueKey(title)));
+    const { data: transitions } = useQuery(getIssueTransitionOption(getIssueKey(title)));
+    console.log(transitions);
     
     const badgeAppearance = useMemo(() => {
         if (!data?.id) return 'removed';
