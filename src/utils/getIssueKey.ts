@@ -1,4 +1,5 @@
 export const getIssueKey = (title: string): string => {
-    const [key] = title.split(':');
-    return key;
+    const regex = /\b[A-Z]{2,}-\d+\b/;
+    const match = title.match(regex);
+    return match ? match[0] : '';
 };

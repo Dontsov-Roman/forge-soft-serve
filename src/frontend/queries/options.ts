@@ -24,7 +24,6 @@ import { GetPullRequestPayload } from '../../types';
 import { Services } from '../../services/Services';
 import { FrontJiraRequesterStrategy } from '../../services/FrontJiraRequesterStrategy';
 
-Services.buildIssue(new FrontJiraRequesterStrategy());
 const staleTime = 5000;
 export const getRepositoriesOption = () => queryOptions({
     queryKey: [GET_REPOSITORIES_KEY],
@@ -40,7 +39,10 @@ export const getPullRequestsOption = (payload: GetPullRequestPayload) => queryOp
 
 export const getIssueOption = (key: string) => queryOptions<Issue>({
     queryKey: [GET_ISSUE_KEY, key],
-    // queryFn: async () => (await Services.getIssueService()).getIssue(key),
+    // queryFn: async () => {
+    //     await Services.buildIssue(new FrontJiraRequesterStrategy());
+    //     (await Services.getIssueService()).getIssue(key)
+    // },
     queryFn: async () => invoke(GET_ISSUE_DEF, { key }),
     staleTime,
 });
@@ -65,6 +67,7 @@ export const reviewPullRequestMutation = () => mutationOptions({
 export const moveIssueToDoneMutation = () => mutationOptions({
     mutationKey: [MOVE_ISSUE_TO_DONE_KEY],
     mutationFn: async (key: string) => {
+        await Services.buildIssue(new FrontJiraRequesterStrategy());
         const issueService = await Services.getIssueService(); 
         await issueService.moveToDone(key);
         return key;

@@ -45,6 +45,7 @@ app:
   id: ari:cloud:ecosystem::app/e241775e-d7de-4788-94f2-983969856a80
 permissions:
   scopes:
+    - manage:jira-project
     - read:status:jira
     - read:issue.transition:jira
     - read:field-configuration:jira

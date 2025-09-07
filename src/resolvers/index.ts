@@ -19,7 +19,6 @@ const resolver = new Resolver();
 const requesterStrategy = new BackJiraRequesterStrategy();
 
 Services.buildGit(GIT_HUB_ORG, GIT_HUB_VERSION);
-Services.buildIssue(requesterStrategy);
 
 resolver.define(GET_REPOSITORIES_DEF, async (req) => {
   const gitService = await Services.getGitHubService();
@@ -47,6 +46,7 @@ resolver.define(SET_GIT_HUB_TOKEN_DEF, async (req: { payload: AuthPayload }) => 
 });
 
 resolver.define(GET_ISSUE_DEF, async (req: { payload: { key: string } }): Promise<Issue> => {
+  await Services.buildIssue(requesterStrategy);
   const issueService = await Services.getIssueService();
   
   return issueService.getIssue(req.payload.key);

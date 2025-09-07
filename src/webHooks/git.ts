@@ -15,7 +15,6 @@ interface WebTriggerResponse {
 
 const requesterStrategy = new BackJiraRequesterStrategy();
 
-Services.buildIssue(requesterStrategy);
 
 const RESPONSE: Record<string, WebTriggerResponse> = {
   OK: { statusCode: 200, body: 'Ticket closed' },
@@ -32,6 +31,8 @@ export async function gitMergeHook(
       if (!event.body) {
         return RESPONSE.NO_BODY;
       }
+      await Services.buildIssue(requesterStrategy);
+
       const body: GitHook = JSON.parse(event.body);
       console.log(body.action, body.pull_request?.title);
       const key = getIssueKey(body.pull_request?.title || "");
