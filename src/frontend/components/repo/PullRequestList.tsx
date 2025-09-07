@@ -21,7 +21,6 @@ export const PullRequestList: React.FC<Props> = React.memo(({ payload }) => {
         onMerge,
         onApprove,
     } = useGit(payload);
-    console.log('pr list', data);
 
     const openModal = useCallback(() => setModalOpen(true), [setModalOpen]);
     const closeModal = useCallback(() => setModalOpen(false), [setModalOpen]);

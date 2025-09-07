@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from 'react';
-import { Spinner, Stack, useConfig } from '@forge/react';
+import { EmptyState, Spinner, Stack } from '@forge/react';
 import { useQuery } from '@tanstack/react-query';
 import { RepoItem } from '../shared/RepoItem';
 import { getRepositoriesOption } from '../../queries/options';
@@ -24,6 +24,7 @@ export const RepositoryList: React.FC = () => {
                         <PullRequestList payload={{ owner: repo.owner.login, repo: repo.name }} />
                     </Stack>
                 ))}
+            {!isLoading && data?.length === 0 && <EmptyState header='No Repositories' />} 
         </Suspense>
     )
 };

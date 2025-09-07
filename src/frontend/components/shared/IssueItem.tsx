@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
-import { Text, Badge, Inline, Stack, User, Image } from "@forge/react";
+import { Text, Badge, Inline, Stack, User, Image, Select } from "@forge/react";
 import { BadgeProps } from "@forge/react/out/types";
+import { OptionProps } from "@forge/react/out/types";
 
 type Props = {
     issueKey?: string;
@@ -8,7 +9,9 @@ type Props = {
     accountId?: string;
     summary?: string;
     iconUrl?: string;
-    issueType?: string;
+    issueStatus?: string;
+    onChangeStatus?: (newStatus: OptionProps) => void;
+    transitionOptions?: OptionProps[];
 };
 
 export const IssueItem: React.FC<Props> = ({
@@ -17,23 +20,36 @@ export const IssueItem: React.FC<Props> = ({
     summary = '',
     iconUrl = '',
     badgeAppearance = 'default',
-    issueType = 'Ticket not found',
+    issueStatus = 'Ticket not found',
+    onChangeStatus,
+    transitionOptions = [],
 }) => {
     const showSummary = useMemo(() => Boolean(iconUrl && summary), [iconUrl, summary]);
     return (
         <Stack space="space.100">
             <Inline space="space.100">
                 <Text>{issueKey}</Text>
-                <Badge appearance={badgeAppearance}>{issueType}</Badge>
+                <Badge appearance={badgeAppearance}>{issueStatus}</Badge>
             </Inline>
-            {showSummary && <Inline space="space.025" alignBlock="start">
-                <Text><Image src={iconUrl || ''} size="xsmall" width={15} /></Text>
-                <Text>{summary}</Text>
-            </Inline>}
-            {accountId && <Inline alignInline="center" alignBlock="center">
-                <Text>Assignee:</Text>
-                <User accountId={accountId} />
-            </Inline>}
+            {
+                onChangeStatus &&
+                transitionOptions.length &&
+                <Select onChange={onChangeStatus} options={transitionOptions} defaultValue={issueStatus} />
+            }
+            {
+                showSummary &&
+                <Inline space="space.025" alignBlock="start">
+                    <Text><Image src={iconUrl || ''} size="xsmall" width={15} /></Text>
+                    <Text>{summary}</Text>
+                </Inline>
+            }
+            {
+                accountId &&
+                <Inline alignInline="center" alignBlock="center">
+                    <Text>Assignee:</Text>
+                    <User accountId={accountId} />
+                </Inline>
+            }
         </Stack>
     );
 };

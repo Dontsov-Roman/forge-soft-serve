@@ -14,7 +14,7 @@ export class BackJiraRequesterStrategy implements IIssueRequesterStrategy {
         console.log(key, result);
         return result.transitions;
     }
-    async moveToDone(key: string, headers?: Headers) {
+    async changeIssueStatus(key: string, headers?: Headers) {
         const result = await asApp().requestJira(route`/rest/api/3/issue/${key}/transitions`, headers);
         return result.ok;
     }

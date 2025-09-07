@@ -43,15 +43,20 @@ export class JiraIssuesService {
         return this.requestStrategy.getTransitions(id, this.getMethod);
     }
 
+    async changeIssueStatus(id: string, transitionId: string | number) {
+        const props = this.preparePostMethod({ transition: { id: transitionId } });
+        return this.requestStrategy.changeIssueStatus(id, props);
+    }
     async moveToDone(id: string) {
         const transitions = await this.getTransitions(id);
-        const doneTransition = transitions.find((t: any) => t?.name === this.DONE && t.isAvailable);
+        const doneTransition = transitions?.find((t: any) => t?.name === this.DONE && t.isAvailable);
         console.log('=============================');
         console.log(transitions);
         console.log(doneTransition);
         if (doneTransition) {
-            const props = this.preparePostMethod({ transition: { id: doneTransition.id } });
-            return this.requestStrategy.moveToDone(id, props);
+            return this.changeIssueStatus(id, doneTransition.id);
+            // const props = this.preparePostMethod({ transition: { id: doneTransition.id } });
+            // return this.requestStrategy.changeIssueStatus(id, props);
         }
         return false;
     }

@@ -5,5 +5,5 @@ export type Headers = Record<string, any>;
 export interface IIssueRequesterStrategy {
     getTransitions(id: string, headers?: Headers): Promise<IssueTransition[]>;
     getIssue(key: string, headers?: Headers): Promise<Issue>;
-    moveToDone(key: string, headers?: Headers): Promise<boolean>;
+    changeIssueStatus(key: string, headers?: Headers): Promise<boolean>;
 }

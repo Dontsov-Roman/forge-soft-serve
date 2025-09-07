@@ -14,7 +14,7 @@ export class FrontJiraRequesterStrategy implements IIssueRequesterStrategy {
         const { transitions } = await response.json();
         return transitions;
     }
-    async moveToDone(key: string, headers?: Headers) {
+    async changeIssueStatus(key: string, headers?: Headers) {
         const result = await requestJira(`${this.url}/${key}/transitions`, headers);
         return result.ok;
     }

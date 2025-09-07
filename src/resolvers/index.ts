@@ -1,5 +1,6 @@
 import Resolver from '@forge/resolver';
 import {
+  CHANGE_ISSUE_STATUS_DEF,
   GET_ISSUE_DEF,
   GET_ISSUE_TRANSITIONS_DEF,
   GET_PULL_REQUESTS_DEF,
@@ -70,6 +71,15 @@ resolver.define(MOVE_ISSUE_TO_DONE_DEF, async (req: { payload: { key: string } }
     return true;
   };
   throw 'Issue couldn\'t move to done';
+});
+
+resolver.define(CHANGE_ISSUE_STATUS_DEF, async (req: { payload: { key: string, status: string } }): Promise<boolean> => {
+  await Services.buildIssue(requesterStrategy);
+  const issueService = await Services.getIssueService();
+  if (await issueService.changeIssueStatus(req.payload.key, req.payload.status)) {
+    return true;
+  };
+  throw `Issue couldn\'t move to this status`;
 });
 
 export const handler = resolver.getDefinitions();

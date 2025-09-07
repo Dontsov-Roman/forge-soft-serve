@@ -2,6 +2,7 @@ import { invoke, requestJira } from '@forge/bridge';
 import { mutationOptions, queryOptions } from '@tanstack/react-query'
 import { AuthPayload, CreateReviewPullRequest, GitPullRequest, GitRepository, Issue, MergePullRequestPayload } from '../../types';
 import {
+    CHANGE_ISSUE_STATUS_DEF,
     GET_ISSUE_DEF,
     GET_ISSUE_TRANSITIONS_DEF,
     GET_PULL_REQUESTS_DEF,
@@ -13,6 +14,7 @@ import {
 } from '../../constants';
 import {
     AUTH_KEY,
+    CHANGE_ISSUE_STATUS_KEY,
     GET_ISSUE_KEY,
     GET_ISSUE_TRANSITION_KEY,
     GET_PULL_REQUESTS_KEY,
@@ -80,6 +82,21 @@ export const moveIssueToDoneMutation = () => mutationOptions({
     mutationFn: async (key: string) => {
         await invoke(MOVE_ISSUE_TO_DONE_DEF, { key });
         return key;
+    }
+});
+
+
+export const changeIssueStatusMutation = () => mutationOptions({
+    mutationKey: [CHANGE_ISSUE_STATUS_KEY],
+    // mutationFn: async (payload: { key: string, status: string }) => {
+    //     await Services.buildIssue(new FrontJiraRequesterStrategy());
+    //     const issueService = await Services.getIssueService(); 
+    //     await issueService.changeStatus(payload.key, payload.status);
+    //     return key;
+    // },
+    mutationFn: async(payload: { key: string | number, status: string }) => {
+        await invoke(CHANGE_ISSUE_STATUS_DEF, payload);
+        return payload.key;
     }
 });
 
