@@ -6,7 +6,7 @@ import { getRepositoriesOption } from '../../queries/options';
 import { PullRequestList } from './PullRequestList';
 import { useMessage } from '../../hooks';
 
-export const RepositoryList: React.FC = () => {
+export const RepositoryList: React.FC = React.memo(() => {
     const { showMessage } = useMessage();
     const { data, isLoading, error } = useQuery(getRepositoriesOption());
     useEffect(() => {
@@ -27,4 +27,4 @@ export const RepositoryList: React.FC = () => {
             {!isLoading && data?.length === 0 && <EmptyState header='No Repositories' />} 
         </Suspense>
     )
-};
+});

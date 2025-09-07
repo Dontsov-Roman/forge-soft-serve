@@ -18,7 +18,7 @@ export const useIssue = (key: string) => {
         ...getIssueTransitionOption(key),
         enabled: !isLoading,
         select: (transitions): OptionProps[] => transitions?.map(
-            ({ id: value, name: label }) => ({ label, value, defaultSelected: Boolean(value === data?.fields?.status.name as any) })
+            ({ id: value, name: label }) => ({ label, value, defaultSelected: Boolean(label === data?.fields?.status.name as any) })
         )
     });
 

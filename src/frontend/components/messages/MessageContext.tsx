@@ -34,7 +34,6 @@ export const MessageContext = createContext<ContextValue>({
 });
 
 const useMessageWrapper = ({ timeout, align: defaultAlign = 'bottom' }: DefaultMainHookProps) => {
-    console.log('useMessageWrapper');
     const ref = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [isVisible, setVisible] = useState(false);
     const toggleMessage = useCallback(() => {

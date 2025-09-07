@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import { Box, Spinner } from "@forge/react";
-import { BadgeProps } from "@forge/react/out/types";
 import { getIssueKey } from "../../../utils/getIssueKey";
 import { IssueItem } from "../shared/IssueItem";
 import { useIssue } from "../../hooks/useIssue";
@@ -37,4 +36,4 @@ export const Issue: React.FC<Props> = React.memo(({ title }) => {
             </Box>
         </Suspense>
     );
-});
+}, ({ title: prevTitle }, { title }) => prevTitle === title);

@@ -25,6 +25,7 @@ export const IssueItem: React.FC<Props> = ({
     transitionOptions = [],
 }) => {
     const showSummary = useMemo(() => Boolean(iconUrl && summary), [iconUrl, summary]);
+    const defaultValue = useMemo(() => transitionOptions.find((t) => t.defaultSelected), [transitionOptions])
     return (
         <Stack space="space.100">
             <Inline space="space.100">
@@ -34,8 +35,12 @@ export const IssueItem: React.FC<Props> = ({
             {
                 onChangeStatus &&
                 transitionOptions.length ?
-                    <Select onChange={onChangeStatus} options={transitionOptions} defaultValue={issueStatus} /> :
-                    null
+                    <Select
+                        onChange={onChangeStatus}
+                        placeholder="New status"
+                        options={transitionOptions}
+                        defaultValue={defaultValue}
+                    /> : null
             }
             {
                 showSummary &&

@@ -9,7 +9,7 @@ const queryClient = new QueryClient();
 const Config = () => (
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
-            <MessageProvider>
+            <MessageProvider timeout={5000}>
                 <Auth />
             </MessageProvider>
         </QueryClientProvider>
