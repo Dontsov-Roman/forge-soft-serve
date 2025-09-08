@@ -7,22 +7,22 @@ import { checkHook } from "../utils/checkHook";
 import { getIssueKey } from "../utils/getIssueKey";
 import { RESPONSE } from "./response";
 
-export interface Handler<Request = WebTriggerEvent, Result = WebTriggerResponse> {
-    setNext(handler: Handler<Request, Result>): Handler<Request, Result>;
+export interface Handler<Request = WebTriggerEvent, Body = GitHook, Result = WebTriggerResponse> {
+    setNext(handler: Handler<Request, Body, Result>): Handler<Request, Body, Result>;
 
-    handle(request: Request, hook?: GitHook): Promise<Result | null>;
+    handle(request: Request, hook?: Body): Promise<Result | null>;
 }
 
-abstract class AbstractHandler implements Handler
+abstract class AbstractHandler<Request = WebTriggerEvent, Body = GitHook, Result = WebTriggerResponse> implements Handler<Request, Body, Result>
 {
-    private nextHandler!: Handler;
+    private nextHandler!: Handler<Request, Body, Result>;
 
-    public setNext(handler: Handler): Handler {
+    public setNext(handler: Handler<Request, Body, Result>): Handler<Request, Body, Result> {
         this.nextHandler = handler;
         return handler;
     }
 
-    public async handle(request: WebTriggerEvent, hook?: GitHook): Promise<WebTriggerResponse | null> {
+    public async handle(request: Request, hook?: Body): Promise<Result | null> {
         if (this.nextHandler) {
             return this.nextHandler.handle(request, hook);
         }
@@ -58,7 +58,7 @@ export class CheckCloseActionHandler extends AbstractHandler {
 export class CheckSignatureHandler extends AbstractHandler {
     public async handle(request: WebTriggerEvent, hook?: GitHook): Promise<WebTriggerResponse | null> {
         const [signature] = request.headers['x-hub-signature-256'];
-        console.log(signature, request.body);
+        console.log(signature);
         if (!(await checkHook(signature, request.body || ''))) {
             console.log(RESPONSE.SIGNATURE_FAILED);
             return RESPONSE.SIGNATURE_FAILED;
