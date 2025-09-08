@@ -55,13 +55,15 @@ resolver.define(GET_REPOSITORIES_DEF, async (req) => {
   // console.log(await res.json());
   await Services.buildGit(GIT_HUB_ORG, GIT_HUB_VERSION);
   const gitService = await Services.getGitHubService();
-  return gitService.getRepositories();
+  const repos = await gitService.getRepositories();
+  return repos;
 });
 
 resolver.define(GET_PULL_REQUESTS_DEF, async (req) => {
   await Services.buildGit(GIT_HUB_ORG, GIT_HUB_VERSION);
   const gitService = await Services.getGitHubService();
-  return gitService.getPullRequests(req.payload);
+  const pullRequests = await gitService.getPullRequests(req.payload);
+  return pullRequests;
 });
 
 resolver.define(MERGE_PULL_REQUESTS_DEF, async (req) => {
