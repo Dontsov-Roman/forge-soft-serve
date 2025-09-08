@@ -25,7 +25,7 @@ export const useGit = (payload: GetPullRequestPayload) => {
     useQueries({
         queries: data?.map?.((pr) => getIssueOption(getIssueKey(pr.title))) || [],
     });
-    const { mutate: reviewPullRequest, isPending: isAprrovePending } = useMutation({
+    const { mutate: reviewPullRequest, isPending: isAprroveLoading } = useMutation({
         ...reviewPullRequestMutation(),
         onSuccess: () => showMessage({ message: 'Pr approved', appearance: 'information' }),
         onError: (err) => showMessage({ message: err.message, appearance: 'discovery' }),
@@ -65,7 +65,7 @@ export const useGit = (payload: GetPullRequestPayload) => {
         onApprove,
         setModalOpen,
         showSpinner: prIsLoading,
-        isAprrovePending,
+        isAprroveLoading,
         data,
         mergeInProgress,
         isModalOpen,

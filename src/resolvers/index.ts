@@ -20,7 +20,7 @@ import { BackAppJiraRequesterStrategy } from '../services/BackAppJiraRequesterSt
 import { BackUserJiraRequesterStrategy } from '../services/BackUserJiraRequesterStrategy';
 
 const resolver = new Resolver();
-const requesterStrategy = new BackUserJiraRequesterStrategy();
+const requesterStrategy = new BackAppJiraRequesterStrategy();
 
 /*
 SOF roles

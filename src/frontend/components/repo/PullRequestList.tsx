@@ -5,6 +5,7 @@ import { PullRequest } from '../shared/PullRequest';
 import { Issue } from '../issue/Issue';
 import { useGit } from '../../hooks';
 import { ConfirmModal } from '../shared/ConfirmModal';
+import { PullRequestActions } from '../shared/PullRequestActions';
 
 type Props = {
     payload: GetPullRequestPayload;
@@ -16,7 +17,7 @@ export const PullRequestList: React.FC<Props> = React.memo(({ payload }) => {
         data,
         mergeInProgress,
         isModalOpen,
-        isAprrovePending,
+        isAprroveLoading,
         setModalOpen,
         onMerge,
         onApprove,
@@ -40,23 +41,12 @@ export const PullRequestList: React.FC<Props> = React.memo(({ payload }) => {
                         <Box padding="space.200">
                             <Stack space='space.200'>
                                 <PullRequest pr={pr} />
-                                <ButtonGroup>
-                                    <Button
-                                        isDisabled={isAprrovePending}
-                                        appearance='default'
-                                        iconBefore="check-circle-outline"
-                                        onClick={() => onApprove(pr)}
-                                    >
-                                        Approve
-                                    </Button>
-                                    <LoadingButton
-                                        isLoading={mergeInProgress || pr.locked}
-                                        onClick={openModal}
-                                        appearance='primary'
-                                    >
-                                        Merge
-                                    </LoadingButton>
-                                </ButtonGroup>
+                                <PullRequestActions
+                                    isApproveLoading={isAprroveLoading}
+                                    isMergeLoading={mergeInProgress || pr.locked}
+                                    onApprove={() => onApprove(pr)}
+                                    onMerge={openModal}
+                                />
                             </Stack>
                             <ConfirmModal
                                 isOpen={isModalOpen}
