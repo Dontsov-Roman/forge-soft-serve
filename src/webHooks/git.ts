@@ -1,5 +1,6 @@
 import { GIT_HUB_ACTION_CLOSED } from "../constants";
 import { BackAppJiraRequesterStrategy } from "../services/BackAppJiraRequesterStrategy";
+import { BackUserJiraRequesterStrategy } from "../services/BackUserJiraRequesterStrategy";
 import { Services } from "../services/Services";
 import { GitHook } from "../types";
 import { getIssueKey } from "../utils/getIssueKey";
@@ -13,7 +14,7 @@ interface WebTriggerResponse {
     body: string;
 }
 
-const requesterStrategy = new BackAppJiraRequesterStrategy();
+const requesterStrategy = new BackUserJiraRequesterStrategy();
 
 const RESPONSE: Record<string, WebTriggerResponse> = {
   OK: { statusCode: 200, body: 'Ticket closed' },
@@ -47,6 +48,7 @@ export async function gitMergeHook(
       console.log(RESPONSE.NOT_FOUND);
       return RESPONSE.NOT_FOUND;
     } catch (err) {
+      console.log(err);
       console.log(RESPONSE.PARSE_ERROR);
       return RESPONSE.PARSE_ERROR;
     }

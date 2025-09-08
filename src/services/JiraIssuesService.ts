@@ -15,6 +15,7 @@ export class JiraIssuesService {
     private get headers() {
         return {
             'Accept': 'application/json',
+            'Content-Type': 'application/json',
         }
     }
     private get getMethod() {
@@ -27,10 +28,7 @@ export class JiraIssuesService {
     private preparePostMethod(body: any) {
         return {
             method: 'POST',
-            headers: {
-                ...this.headers,
-                'Content-Type': 'application/json',
-            },
+            headers: this.headers,
             body: JSON.stringify(body),
         }
     }

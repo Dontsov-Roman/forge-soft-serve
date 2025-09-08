@@ -20,7 +20,7 @@ import { BackAppJiraRequesterStrategy } from '../services/BackAppJiraRequesterSt
 import { BackUserJiraRequesterStrategy } from '../services/BackUserJiraRequesterStrategy';
 
 const resolver = new Resolver();
-const requesterStrategy = new BackAppJiraRequesterStrategy();
+const requesterStrategy = new BackUserJiraRequesterStrategy();
 
 /*
 SOF roles
@@ -46,7 +46,7 @@ resolver.define(GET_REPOSITORIES_DEF, async (req) => {
   // const res = await asUser().requestJira(route`/rest/api/3/project/SOF/role/1004`,{
     // method: 'POST',
     // headers: {
-    //     'Authorization': `Bearer ATATT3xFfGF0DhAxjWRS8ELS9IG3N_WSFuWmvPvhmklyTha7ktb0dD0E848gJA_YK3--LgMlx9RjRjIBpIOEKud7VVQL4AAEeD97W8eDZClDaJO7ucXLdef_h6ZztxRfrxsq1tJBPZ0b_8OdD266kRhoOPP0_vTz2wFRrArg6Ye0J2ljxgtoMXY=1B617B48`,
+    //     'Authorization': `Bearer `,
     //     'Accept': 'application/json',
     //     'Content-Type': 'application/json',
     //   },
@@ -93,7 +93,8 @@ resolver.define(GET_ISSUE_TRANSITIONS_DEF, async (req: { payload: { key: string 
   await Services.buildIssue(requesterStrategy);
   const issueService = await Services.getIssueService();
   
-  return issueService.getTransitions(req.payload.key);
+  const transitions = await issueService.getTransitions(req.payload.key);
+  return transitions;
 });
 
 resolver.define(MOVE_ISSUE_TO_DONE_DEF, async (req: { payload: { key: string } }): Promise<boolean> => {

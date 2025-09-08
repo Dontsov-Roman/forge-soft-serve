@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
     DefaultMainHookProps,
     Align,
@@ -13,10 +13,16 @@ export const useMessageWrapper = ({ timeout, align: defaultAlign = 'bottom' }: D
         setVisible(true);
         if (ref.current)
             clearTimeout(ref.current);
-        ref.current = setTimeout(() => {
-            setVisible(false);
-            ref.current = null;
-        }, timeout);
+        // ref.current = setTimeout(() => {
+        //     setVisible(false);
+        //     ref.current = null;
+        // }, timeout);
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            if(ref.current) clearTimeout(ref.current);
+        }
     }, []);
 
     const [appearance, setAppearance] = useState<Appearance>('information');
