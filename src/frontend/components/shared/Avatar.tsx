@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Image, ImageProps, Tooltip } from '@forge/react';
+import { Image, ImageProps, Tooltip } from '@forge/react';
 
 type Props = {
     url: string;
