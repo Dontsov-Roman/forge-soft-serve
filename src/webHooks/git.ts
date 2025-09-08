@@ -1,5 +1,5 @@
 import { GIT_HUB_ACTION_CLOSED } from "../constants";
-import { BackJiraRequesterStrategy } from "../services/BackJiraRequesterStrategy";
+import { BackAppJiraRequesterStrategy } from "../services/BackAppJiraRequesterStrategy";
 import { Services } from "../services/Services";
 import { GitHook } from "../types";
 import { getIssueKey } from "../utils/getIssueKey";
@@ -13,7 +13,7 @@ interface WebTriggerResponse {
     body: string;
 }
 
-const requesterStrategy = new BackJiraRequesterStrategy();
+const requesterStrategy = new BackAppJiraRequesterStrategy();
 
 const RESPONSE: Record<string, WebTriggerResponse> = {
   OK: { statusCode: 200, body: 'Ticket closed' },

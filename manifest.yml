@@ -47,7 +47,11 @@ permissions:
   scopes:
     - read:jira-work
     - write:jira-work
+    - read:jira-user
     - storage:app
+    - manage:jira-project
+    - manage:jira-configuration
+    - manage:jira-webhook
   external:
     images:
       - 'https://secure.gravatar.com/avatar/*'

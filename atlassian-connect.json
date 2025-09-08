@@ -1,0 +1,9 @@
+{
+    "baseUrl": "https://roman-dontsov.atlassian.net",
+    "key": "atlassian-connect-app",
+    "scopes": [
+        "read",
+        "write"
+    ],
+    "modules": {}
+}

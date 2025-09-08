@@ -1,5 +1,5 @@
 import Resolver from '@forge/resolver';
-
+import { asApp, asUser, route } from '@forge/api';
 import {
   CHANGE_ISSUE_STATUS_DEF,
   GET_ISSUE_DEF,
@@ -14,14 +14,45 @@ import {
   SET_GIT_HUB_TOKEN_DEF,
 } from '../constants';
 import { AuthPayload, Issue } from '../types';
-import { Services } from '../services/Services';
-import { BackJiraRequesterStrategy } from '../services/BackJiraRequesterStrategy';
 import { IssueTransition } from '../types/IssueTransition';
+import { Services } from '../services/Services';
+import { BackAppJiraRequesterStrategy } from '../services/BackAppJiraRequesterStrategy';
+import { BackUserJiraRequesterStrategy } from '../services/BackUserJiraRequesterStrategy';
 
 const resolver = new Resolver();
-const requesterStrategy = new BackJiraRequesterStrategy();
+const requesterStrategy = new BackAppJiraRequesterStrategy();
 
+/*
+SOF roles
+{
+  'atlassian-addons-project-access': 'https://api.atlassian.com/ex/jira/eb7467e5-3d18-4d47-9c89-e4661dfe24ef/rest/api/3/project/10000/role/10007',
+  Administrator: 'https://api.atlassian.com/ex/jira/eb7467e5-3d18-4d47-9c89-e4661dfe24ef/rest/api/3/project/10000/role/10004',
+  Viewer: 'https://api.atlassian.com/ex/jira/eb7467e5-3d18-4d47-9c89-e4661dfe24ef/rest/api/3/project/10000/role/10006',
+  Member: 'https://api.atlassian.com/ex/jira/eb7467e5-3d18-4d47-9c89-e4661dfe24ef/rest/api/3/project/10000/role/10005'
+}
+*/
 resolver.define(GET_REPOSITORIES_DEF, async (req) => {
+
+  // const res = await asApp().requestJira(route`/rest/api/3/myself`);
+  // const myself = await res.json();
+  // console.log("Application:");
+  // console.log(myself);
+
+  // console.log('GET project roles');
+  // const res = await asApp().requestJira(route`/rest/api/3/project/SOF/role/10004`);
+  // console.log(await res.json());
+
+  // console.log('Grant app access to jira');
+  // const res = await asUser().requestJira(route`/rest/api/3/project/SOF/role/1004`,{
+    // method: 'POST',
+    // headers: {
+    //     'Authorization': `Bearer ATATT3xFfGF0DhAxjWRS8ELS9IG3N_WSFuWmvPvhmklyTha7ktb0dD0E848gJA_YK3--LgMlx9RjRjIBpIOEKud7VVQL4AAEeD97W8eDZClDaJO7ucXLdef_h6ZztxRfrxsq1tJBPZ0b_8OdD266kRhoOPP0_vTz2wFRrArg6Ye0J2ljxgtoMXY=1B617B48`,
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+      // body: JSON.stringify({"user": ["712020:1380fbe4-4277-4a31-a32e-07c21ea651ed"]}),
+  //   });
+  // console.log(await res.json());
   await Services.buildGit(GIT_HUB_ORG, GIT_HUB_VERSION);
   const gitService = await Services.getGitHubService();
   return gitService.getRepositories();
