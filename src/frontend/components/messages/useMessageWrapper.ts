@@ -13,10 +13,10 @@ export const useMessageWrapper = ({ timeout, align: defaultAlign = 'bottom' }: D
         setVisible(true);
         if (ref.current)
             clearTimeout(ref.current);
-        // ref.current = setTimeout(() => {
-        //     setVisible(false);
-        //     ref.current = null;
-        // }, timeout);
+        ref.current = setTimeout(() => {
+            setVisible(false);
+            ref.current = null;
+        }, timeout);
     }, []);
 
     useEffect(() => {

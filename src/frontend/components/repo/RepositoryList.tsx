@@ -12,11 +12,11 @@ export const RepositoryList: React.FC = React.memo(() => {
     useEffect(() => {
         if(error?.message)
             showMessage({ message: error?.message, appearance: 'error' });
-    }, [error]);
-    
+    }, [error?.message]);
+
     return (
         <Suspense fallback={<Spinner size='xlarge' />}>
-            {isLoading || !data?.map ?
+            {isLoading ?
                 <Spinner size='xlarge' /> :
                 data?.map((repo) => (
                     <Stack key={repo.id}>
@@ -24,7 +24,7 @@ export const RepositoryList: React.FC = React.memo(() => {
                         <PullRequestList payload={{ owner: repo.owner.login, repo: repo.name }} />
                     </Stack>
                 ))}
-            {!isLoading && data?.length === 0 && <EmptyState header='No Repositories' />} 
+            {!isLoading && !data?.length && <EmptyState header='No Repositories' />} 
         </Suspense>
     )
 });
