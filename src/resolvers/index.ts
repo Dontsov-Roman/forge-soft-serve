@@ -1,5 +1,4 @@
 import Resolver from '@forge/resolver';
-import { asApp, asUser, route } from '@forge/api';
 import {
   CHANGE_ISSUE_STATUS_DEF,
   GET_ISSUE_DEF,
@@ -11,7 +10,16 @@ import {
   REVIEW_PULL_REQUESTS_DEF,
   SET_GIT_HUB_TOKEN_DEF,
 } from '../constants';
-import { AuthPayload, ChangeIssueStatusPayload, CreateReviewPullRequest, GetPullRequestPayload, GitRepository, Issue, IssueKeyPayload, MergePullRequestPayload } from '../types';
+import {
+  AuthPayload,
+  ChangeIssueStatusPayload,
+  CreateReviewPullRequest,
+  GetPullRequestPayload,
+  GitRepository,
+  Issue,
+  IssueKeyPayload,
+  MergePullRequestPayload,
+} from '../types';
 import { IssueTransition } from '../types/IssueTransition';
 import { Services } from '../services/Services';
 import { buildGitWrapper } from './buildGitWrapper';
@@ -19,37 +27,7 @@ import { buildIssueWrapper } from './buildIssueWrapper';
 
 const resolver = new Resolver();
 
-/*
-SOF roles
-{
-  'atlassian-addons-project-access': 'https://api.atlassian.com/ex/jira/eb7467e5-3d18-4d47-9c89-e4661dfe24ef/rest/api/3/project/10000/role/10007',
-  Administrator: 'https://api.atlassian.com/ex/jira/eb7467e5-3d18-4d47-9c89-e4661dfe24ef/rest/api/3/project/10000/role/10004',
-  Viewer: 'https://api.atlassian.com/ex/jira/eb7467e5-3d18-4d47-9c89-e4661dfe24ef/rest/api/3/project/10000/role/10006',
-  Member: 'https://api.atlassian.com/ex/jira/eb7467e5-3d18-4d47-9c89-e4661dfe24ef/rest/api/3/project/10000/role/10005'
-}
-*/
 resolver.define(GET_REPOSITORIES_DEF, buildGitWrapper<void, GitRepository[]>(async (req) => {
-
-  // const res = await asApp().requestJira(route`/rest/api/3/myself`);
-  // const myself = await res.json();
-  // console.log("Application:");
-  // console.log(myself);
-
-  // console.log('GET project roles');
-  // const res = await asApp().requestJira(route`/rest/api/3/project/SOF/role/10004`);
-  // console.log(await res.json());
-
-  // console.log('Grant app access to jira');
-  // const res = await asUser().requestJira(route`/rest/api/3/project/SOF/role/1004`,{
-    // method: 'POST',
-    // headers: {
-    //     'Authorization': `Bearer `,
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-      // body: JSON.stringify({"user": ["712020:1380fbe4-4277-4a31-a32e-07c21ea651ed"]}),
-  //   });
-  // console.log(await res.json());
   const gitService = await Services.getGitHubService();
   const repos = await gitService.getRepositories();
   return repos;
