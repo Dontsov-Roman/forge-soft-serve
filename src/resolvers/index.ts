@@ -11,7 +11,7 @@ import {
   REVIEW_PULL_REQUESTS_DEF,
   SET_GIT_HUB_TOKEN_DEF,
 } from '../constants';
-import { AuthPayload, ChangeIssueStatusPayload, CreateReviewPullRequest, GetPullRequestPayload, Issue, IssueKeyPayload, MergePullRequestPayload } from '../types';
+import { AuthPayload, ChangeIssueStatusPayload, CreateReviewPullRequest, GetPullRequestPayload, GitRepository, Issue, IssueKeyPayload, MergePullRequestPayload } from '../types';
 import { IssueTransition } from '../types/IssueTransition';
 import { Services } from '../services/Services';
 import { buildGitWrapper } from './buildGitWrapper';
@@ -28,7 +28,7 @@ SOF roles
   Member: 'https://api.atlassian.com/ex/jira/eb7467e5-3d18-4d47-9c89-e4661dfe24ef/rest/api/3/project/10000/role/10005'
 }
 */
-resolver.define(GET_REPOSITORIES_DEF, buildGitWrapper(async (req) => {
+resolver.define(GET_REPOSITORIES_DEF, buildGitWrapper<void, GitRepository[]>(async (req) => {
 
   // const res = await asApp().requestJira(route`/rest/api/3/myself`);
   // const myself = await res.json();
