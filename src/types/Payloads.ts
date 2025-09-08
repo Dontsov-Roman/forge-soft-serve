@@ -15,17 +15,28 @@ export type MergePullRequestPayload = GetPullRequestPayload & {
     title: string;
     commit_title?: string;
     commit_message?: string;
-}
+};
+
 export type MergePullRequestResponse = {
     message: string;
     merged: boolean;
     sha: string;
 };
+
 export type CreateReviewPullRequest = GetPullRequestPayload & {
     pull_number: number;
     event: PullRequestEventEnum;
     body?: string;
-}
+};
+
 export type AuthPayload = {
     token: string;
 };
+
+export type IssueKeyPayload = {
+    key: string;
+};
+
+export type ChangeIssueStatusPayload = IssueKeyPayload & {
+    status: string;
+}
