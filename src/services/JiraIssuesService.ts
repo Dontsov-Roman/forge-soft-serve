@@ -18,6 +18,7 @@ export class JiraIssuesService {
             'Content-Type': 'application/json',
         }
     }
+
     private get getMethod() {
         return {
             method: 'GET',
@@ -39,8 +40,8 @@ export class JiraIssuesService {
 
     async getTransitions(id: string): Promise<IssueTransition[]> {
         const transitions = await this.requestStrategy.getTransitions(id, this.getMethod);
-        console.log('Transitions:');
-        console.log(transitions);
+        // console.log('Transitions:');
+        // console.log(transitions);
         return transitions;
     }
 
@@ -48,6 +49,7 @@ export class JiraIssuesService {
         const props = this.preparePostMethod({ transition: { id: transitionId } });
         return this.requestStrategy.changeIssueStatus(id, props);
     }
+    
     async moveToDone(id: string) {
         const transitions = await this.getTransitions(id);
         const doneTransition = transitions?.find((t: any) => t?.name === this.DONE && t.isAvailable);

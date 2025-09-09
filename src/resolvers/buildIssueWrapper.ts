@@ -3,7 +3,7 @@ import { Services } from "../services/Services";
 import { BackAppJiraRequesterStrategy } from "../services/BackAppJiraRequesterStrategy";
 import { BackUserJiraRequesterStrategy } from "../services/BackUserJiraRequesterStrategy";
 
-const requesterStrategy = new BackUserJiraRequesterStrategy();
+const requesterStrategy = new BackAppJiraRequesterStrategy();
 
 export function buildIssueWrapper<Args = never, R = unknown>(cb: ResolverFunction<Args, R>): ResolverFunction<Args, R> {
     const resolver: ResolverFunction<Args, R> = async (...args) => {
