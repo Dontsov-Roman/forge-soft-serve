@@ -1,5 +1,5 @@
-import { Issue } from "../types";
-import { IssueTransition } from "../types/IssueTransition";
+import { Issue } from "../../types";
+import { IssueTransition } from "../../types/IssueTransition";
 
 export type Headers = Record<string, any>;
 

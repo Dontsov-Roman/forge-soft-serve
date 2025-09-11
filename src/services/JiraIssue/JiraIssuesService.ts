@@ -1,5 +1,4 @@
-import { Issue } from "../types";
-import { IssueTransition } from "../types/IssueTransition";
+import { Issue,IssueTransition } from "../../types";
 import { IIssueRequesterStrategy } from "./types";
 
 export class JiraIssuesService {

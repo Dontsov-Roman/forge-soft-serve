@@ -14,7 +14,7 @@ import {
     MOVE_ISSUE_TO_DONE_KEY,
 } from '../../keys';
 import { Services } from '../../../services/Services';
-import { FrontJiraRequesterStrategy } from '../../../services/FrontJiraRequesterStrategy';
+import { FrontJiraRequesterStrategy } from '../../../services/JiraIssue/FrontJiraRequesterStrategy';
 import { IssueTransition } from '../../../types/IssueTransition';
 
 const staleTime = 5000;

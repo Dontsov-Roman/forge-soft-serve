@@ -1,7 +1,6 @@
 import { route, asUser } from '@forge/api';
-import { IIssueRequesterStrategy, Headers } from "./types";
-import { Issue } from '../types';
-import { IssueTransition } from '../types/IssueTransition';
+import { IIssueRequesterStrategy, Headers } from './types';
+import { Issue, IssueTransition } from '../../types';
 
 export class BackUserJiraRequesterStrategy implements IIssueRequesterStrategy {
     async getIssue(key: string, headers?: Headers): Promise<Issue> {

@@ -1,7 +1,7 @@
 import { ResolverFunction } from "@forge/resolver";
 import { Services } from "../services/Services";
-import { BackAppJiraRequesterStrategy } from "../services/BackAppJiraRequesterStrategy";
-import { BackUserJiraRequesterStrategy } from "../services/BackUserJiraRequesterStrategy";
+import { BackAppJiraRequesterStrategy } from "../services/JiraIssue/BackAppJiraRequesterStrategy";
+import { BackUserJiraRequesterStrategy } from "../services/JiraIssue/BackUserJiraRequesterStrategy";
 
 const requesterStrategy = new BackAppJiraRequesterStrategy();
 

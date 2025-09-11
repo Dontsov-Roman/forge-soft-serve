@@ -1,7 +1,6 @@
 import { requestJira } from "@forge/bridge";
 import { IIssueRequesterStrategy, Headers } from "./types";
-import { Issue } from "../types";
-import { IssueTransition } from "../types/IssueTransition";
+import { Issue, IssueTransition } from "../../types";
 
 export class FrontJiraRequesterStrategy implements IIssueRequesterStrategy {
     private url = '/rest/api/3/issue';

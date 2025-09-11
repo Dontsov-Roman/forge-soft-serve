@@ -1,6 +1,6 @@
 import { GitService } from "./GithubService";
-import { JiraIssuesService } from "./JiraIssuesService";
-import { IIssueRequesterStrategy } from "./types";
+import { JiraIssuesService } from "./JiraIssue/JiraIssuesService";
+import { IIssueRequesterStrategy } from "./JiraIssue/types";
 
 export class Services {
     static githubService: GitService;

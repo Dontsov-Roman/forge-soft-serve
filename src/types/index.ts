@@ -3,3 +3,5 @@ export * from './Git';
 export * from './Payloads';
 export * from './Issue';
 export * from './IssueTransition';
+export * from './WebTrigger';
+export * from './ChainResposibility';
