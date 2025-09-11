@@ -1,9 +1,18 @@
 modules:
+  jiraServiceManagement:queuePage:
+    - key: queue-soft-serve
+      title: "Queue Page"
+      resource: jsm
+      resolver:
+        function: resolver
+      render: native
+
   webtrigger:
     - key: github-webhook
       function: github-hook
       events:
         - webtrigger
+
   jira:adminPage:
     - key: forge-soft-serve-auth
       resource: auth
@@ -36,6 +45,8 @@ resources:
   - key: config
     path: src/frontend/config.tsx
   - key: main
+    path: src/frontend/index.tsx
+  - key: jsm
     path: src/frontend/index.tsx
 app:
   runtime:
