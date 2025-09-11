@@ -27,7 +27,7 @@ modules:
       resolver:
         function: resolver
       title: "Config Page"
-      useAsConfig: true 
+      useAsConfig: true
     - key: forge-soft-serve
       resource: main
       resolver:
@@ -65,11 +65,11 @@ permissions:
     - manage:jira-webhook
   external:
     images:
-      - 'https://secure.gravatar.com/avatar/*'
-      - 'https://api.atlassian.com'
-      - 'https://avatars.githubusercontent.com/u/*'
-      - 'https://avatars.githubusercontent.com'
-      - 'https://api.atlassian.com/*'
+      - address: https://secure.gravatar.com/avatar/*
+      - address: https://api.atlassian.com
+      - address: https://avatars.githubusercontent.com/u/*
+      - address: https://avatars.githubusercontent.com
+      - address: https://api.atlassian.com/*
     fetch:
       backend:
         - remote: git-api
