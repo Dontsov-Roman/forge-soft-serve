@@ -6,6 +6,12 @@ modules:
       resolver:
         function: resolver
       render: native
+    - key: queue-config-soft-serve
+      title: "Config Queue Page"
+      resource: config
+      resolver:
+        function: resolver
+      render: native
 
   webtrigger:
     - key: github-webhook
