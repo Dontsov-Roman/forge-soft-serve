@@ -69,6 +69,7 @@ permissions:
       - 'https://api.atlassian.com'
       - 'https://avatars.githubusercontent.com/u/*'
       - 'https://avatars.githubusercontent.com'
+      - 'https://api.atlassian.com/*'
     fetch:
       backend:
         - remote: git-api
