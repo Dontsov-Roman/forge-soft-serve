@@ -53,10 +53,8 @@ export class JiraIssuesService {
         const transitions = await this.getTransitions(id);
         const doneTransition = transitions?.find((t: any) => (t?.name === this.DONE || t?.to.name === this.DONE) && t.isAvailable);
         console.log('=============================');
-        console.log('All transitions:');
-        console.log(transitions);
-        console.log('Done transition:');
-        console.log(doneTransition);
+        console.log('Done transition id:');
+        console.log(doneTransition?.id);
         if (doneTransition) {
             return this.changeIssueStatus(id, doneTransition.id);
         }
