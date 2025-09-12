@@ -39,6 +39,8 @@ export type GitPullRequest = ID & {
     labels: GitLabel[];
     base: {
         repo: GitRepository;
+        label: string;
+        ref: string;
     };
 };
 

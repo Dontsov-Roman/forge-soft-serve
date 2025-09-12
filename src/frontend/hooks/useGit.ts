@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { getIssueKey } from "../../utils/getIssueKey";
@@ -6,7 +6,6 @@ import { GET_ISSUE_KEY, GET_PULL_REQUESTS_KEY } from "../keys";
 import { GetPullRequestPayload, GitPullRequest, PullRequestEventEnum } from "../../types";
 import {
     getIssueOption,
-    moveIssueToDoneMutation,
 } from "../components/issue/queries";
 import {
     reviewPullRequestMutation,
@@ -16,7 +15,6 @@ import {
 import { useMessage } from "./useMessage";
 
 export const useGit = (payload: GetPullRequestPayload) => {
-    const [isModalOpen, setModalOpen] = useState(false);
     const { showMessage } = useMessage();
 
     const queryClient = useQueryClient();
@@ -25,24 +23,17 @@ export const useGit = (payload: GetPullRequestPayload) => {
     useQueries({
         queries: data?.map?.((pr) => getIssueOption(getIssueKey(pr.title))) || [],
     });
-    const { mutate: reviewPullRequest, isPending: isAprroveLoading } = useMutation({
+    const { mutate: reviewPullRequest, isPending: isApproveLoading } = useMutation({
         ...reviewPullRequestMutation(),
         onSuccess: () => showMessage({ message: 'Pr approved', appearance: 'information' }),
         onError: (err) => showMessage({ message: err.message, appearance: 'discovery' }),
     });
 
-    const { mutate: closeIssue } = useMutation({
-        ...moveIssueToDoneMutation(),
-        onSuccess: (id) => {
-            queryClient.invalidateQueries({ queryKey: [GET_ISSUE_KEY, id] });
-        },
-    });
-    
-    const { mutate: mergePr, isPending: mergeInProgress } = useMutation({
+    const { mutate: mergePr, isPending: isMergeLoading } = useMutation({
         ...mergePullRequestMutation(),
         onSuccess: (data, payload) => {
-            // closeIssue(getIssueKey(payload.title));
             queryClient.invalidateQueries({ queryKey: [GET_PULL_REQUESTS_KEY] });
+            queryClient.invalidateQueries({ queryKey: [GET_ISSUE_KEY] });
             showMessage({ message: data.message, appearance: data.merged ? 'success': 'information' })
         },
     });
@@ -63,11 +54,9 @@ export const useGit = (payload: GetPullRequestPayload) => {
     return {
         onMerge,
         onApprove,
-        setModalOpen,
         showSpinner: prIsLoading,
-        isAprroveLoading,
+        isApproveLoading,
         data,
-        mergeInProgress,
-        isModalOpen,
+        isMergeLoading,
     };
 };

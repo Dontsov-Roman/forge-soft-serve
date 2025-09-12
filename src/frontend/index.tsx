@@ -8,6 +8,7 @@ import {
 // Create a client
 import { RepositoryList } from './components/repo/RepositoryList';
 import { MessageProvider } from './components/messages/MessageContext';
+import { ModalProvider } from './components/modal/ModalContext';
 
 const queryClient = new QueryClient();
 
@@ -15,9 +16,11 @@ const App = () => {
   const context = useProductContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <MessageProvider align='top' timeout={5000}>
-        <RepositoryList />
-      </MessageProvider>
+      <ModalProvider>
+        <MessageProvider align='top' timeout={5000}>
+          <RepositoryList />
+        </MessageProvider>
+      </ModalProvider>
     </QueryClientProvider>
   );
 };

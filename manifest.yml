@@ -69,7 +69,7 @@ permissions:
       - address: https://api.atlassian.com
       - address: https://avatars.githubusercontent.com/u/*
       - address: https://avatars.githubusercontent.com
-      - address: https://api.atlassian.com/*
+      - address: https://api.atlassian.com/ex/jira/*
     fetch:
       backend:
         - remote: git-api
