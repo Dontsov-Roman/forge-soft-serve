@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Text, Badge, Inline, Stack, User, Image, Select } from "@forge/react";
+import { Text, Badge, Inline, Stack, User, Image, Select, Box } from "@forge/react";
 import { BadgeProps } from "@forge/react/out/types";
 import { OptionProps } from "@forge/react/out/types";
 
@@ -28,9 +28,9 @@ export const IssueItem: React.FC<Props> = ({
     const defaultValue = useMemo(() => transitionOptions.find((t) => t.defaultSelected), [transitionOptions])
     return (
         <Stack space="space.100">
-            <Inline space="space.100">
-                <Text>{issueKey}</Text>
-                <Badge appearance={badgeAppearance}>{issueStatus}</Badge>
+            <Inline space="space.100" alignBlock="center">
+                <Box><Text>{issueKey}</Text></Box>
+                <Box><Badge appearance={badgeAppearance}>{issueStatus}</Badge></Box>
             </Inline>
             {
                 onChangeStatus &&
@@ -44,9 +44,9 @@ export const IssueItem: React.FC<Props> = ({
             }
             {
                 showSummary &&
-                <Inline space="space.025" alignBlock="start">
-                    <Text><Image src={iconUrl || ''} size="xsmall" width={15} /></Text>
-                    <Text>{summary}</Text>
+                <Inline space="space.100" alignBlock="center" alignInline="start">
+                    <Box><Image src={iconUrl || ''} size="xsmall" width="15px" /></Box>
+                    <Box><Text size="small">{summary}</Text></Box>
                 </Inline>
             }
             {
