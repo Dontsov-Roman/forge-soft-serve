@@ -17,7 +17,6 @@
 - Strategy for different request type for JiraService(3 strategies)
 - Chain of responsobility for webhook
 - Singleton for services
-- Facade as main Service class
 
 ## Tests:
 - used jest with mocked data
