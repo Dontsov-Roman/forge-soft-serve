@@ -1,12 +1,15 @@
 const mockRequestJira = jest.fn();
 
 export default {
-  asApp: () => ({
-    requestJira: mockRequestJira,
-  }),
+    asApp: () => ({
+        requestJira: mockRequestJira,
+    }),
+    asUser: () => ({
+            requestJira: mockRequestJira,
+    }),
 };
 
 export const route = (strings: TemplateStringsArray, ...values: any[]) =>
-  strings.reduce((acc, str, i) => acc + str + (values[i] || ""), "");
+    strings.reduce((acc, str, i) => acc + str + (values[i] || ""), "");
   
 export { mockRequestJira };

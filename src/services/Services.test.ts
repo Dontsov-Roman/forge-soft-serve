@@ -7,7 +7,7 @@ import { BackAppJiraRequesterStrategy } from "./JiraIssue/BackAppJiraRequesterSt
 import { JiraIssuesService } from "./JiraIssue/JiraIssuesService";
 import { BackUserJiraRequesterStrategy } from "./JiraIssue/BackUserJiraRequesterStrategy";
 import { FrontJiraRequesterStrategy } from "./JiraIssue/FrontJiraRequesterStrategy";
-import { GitLabel, GitPullRequest, GitRepository, GitUser, MergePullRequestResponse, PullRequestEventEnum } from "../types";
+import { GitLabel, GitPullRequest, GitRepository, GitUser, Issue, MergePullRequestResponse, PullRequestEventEnum } from "../types";
 
 const MOCKED_GIT_USER: GitUser = {
     id: 1,
@@ -58,6 +58,23 @@ const MOCKED_MERGE_RESPONSE: MergePullRequestResponse = {
     merged: true,
     sha: 'sha',
 };
+
+const MOCKED_ISSUE = {
+    id: 1,
+    expand: 'string',
+    key: 'string'
+};
+
+
+const MOCKED_ISSUE_TRANSITION = {
+    id: 1,
+    expand: 'string',
+    key: 'string',
+    name: 'Done',
+    isAvailable: true,
+    to: { name: 'Done' }
+};
+
 describe("Services", () => {
     beforeEach(() => {
         jest.clearAllMocks();
@@ -93,10 +110,10 @@ describe("Services", () => {
 
     it("Get repository from Service", async () => {
         await mockOctokitRequest.mockResolvedValueOnce({ data: [MOCKED_REPO] });
-        await Services.buildGit(GIT_HUB_ORG, GIT_HUB_VERSION);
+        await Services.buildIssue(new BackAppJiraRequesterStrategy());
         const service = await Services.getGitHubService();
-        const repos = await service.getRepositories();
-        expect(repos).toStrictEqual([MOCKED_REPO]);
+        const result = await service.getRepositories();
+        expect(result).toStrictEqual([MOCKED_REPO]);
     });
 
     
@@ -104,15 +121,75 @@ describe("Services", () => {
         await mockOctokitRequest.mockResolvedValueOnce({ data: [MOCKED_PR] });
         await Services.buildGit(GIT_HUB_ORG, GIT_HUB_VERSION);
         const service = await Services.getGitHubService();
-        const repos = await service.getPullRequests({ owner: 'owner', repo: 'repo'});
-        expect(repos).toStrictEqual([MOCKED_PR]);
+        const result = await service.getPullRequests({ owner: 'owner', repo: 'repo'});
+        expect(result).toStrictEqual([MOCKED_PR]);
     });
 
     it("Merge Pull Request from Service", async () => {
         await mockOctokitRequest.mockResolvedValueOnce({ data: MOCKED_MERGE_RESPONSE });
         await Services.buildGit(GIT_HUB_ORG, GIT_HUB_VERSION);
         const service = await Services.getGitHubService();
-        const repos = await service.mergePullRequest({ owner: '', repo: '', pull_number: 1, title: '' });
-        expect(repos).toStrictEqual(MOCKED_MERGE_RESPONSE);
+        const result = await service.mergePullRequest({ owner: '', repo: '', pull_number: 1, title: '' });
+        expect(result).toStrictEqual(MOCKED_MERGE_RESPONSE);
+    });
+
+    
+    it("Get issue from Service", async () => {
+        await mockRequestJira.mockResolvedValueOnce({
+            json: async () => MOCKED_ISSUE
+        });
+        await Services.buildIssue(new BackAppJiraRequesterStrategy());
+        const service = await Services.getIssueService();
+        const result = await service.getIssue('key');
+        expect(result).toBe(MOCKED_ISSUE);
+    });
+
+    it("Get transitions from Service", async () => {
+        await mockRequestJira.mockResolvedValueOnce({
+            json: async () => ({ transitions: [MOCKED_ISSUE_TRANSITION] })
+        });
+        await Services.buildIssue(new BackAppJiraRequesterStrategy());
+        const service = await Services.getIssueService();
+        const result = await service.getTransitions('key');
+        expect(result).toStrictEqual([MOCKED_ISSUE_TRANSITION]);
+    });
+    
+    it("Change issue status from Service", async () => {
+        await mockRequestJira.mockResolvedValueOnce({
+            ok: true
+        });
+        const service = await Services.getIssueService();
+        const result = await service.changeIssueStatus('key', 'closed');
+        expect(result).toBe(true);
+    });
+
+    it("Move issue to done status, Done transition available from Service", async () => {
+        await mockRequestJira.mockResolvedValue({
+            json: async () => ({ transitions: [MOCKED_ISSUE_TRANSITION] }),
+            ok: true,
+        });
+        const service = await Services.getIssueService();
+        const result = await service.moveToDone('key');
+        expect(result).toBe(true);
+    });
+
+    it("Move issue to done status, Done transition unavailable from Service", async () => {
+        await mockRequestJira.mockResolvedValue({
+            json: async () => ({ transitions: [{ ...MOCKED_ISSUE_TRANSITION, isAvailable: false }] }),
+            ok: true,
+        });
+        const service = await Services.getIssueService();
+        const result = await service.moveToDone('key');
+        expect(result).toBe(false);
+    });
+    
+    it("Move issue to done status, Done transition doesn't exist from Service", async () => {
+        await mockRequestJira.mockResolvedValue({
+            json: async () => ({ transitions: [{ ...MOCKED_ISSUE_TRANSITION, name: 'Open', to: { name: 'Open' } }] }),
+            ok: true,
+        });
+        const service = await Services.getIssueService();
+        const result = await service.moveToDone('key');
+        expect(result).toBe(false);
     });
 });
