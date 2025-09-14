@@ -8,15 +8,14 @@ import {
     MOCKED_ISSUE,
 } from 'mock-data';
 
-import { Services } from "./Services";
-import { GIT_HUB_ORG, GIT_HUB_VERSION } from "../constants";
-import { GitService } from "./GithubService";
-import { BackAppJiraRequesterStrategy } from "./JiraIssue/BackAppJiraRequesterStrategy";
-import { JiraIssuesService } from "./JiraIssue/JiraIssuesService";
-import { BackUserJiraRequesterStrategy } from "./JiraIssue/BackUserJiraRequesterStrategy";
-import { FrontJiraRequesterStrategy } from "./JiraIssue/FrontJiraRequesterStrategy";
-import { PullRequestEventEnum } from "../types";
-
+import { Services } from "../src/services/Services";
+import { GIT_HUB_ORG, GIT_HUB_VERSION } from "../src/constants";
+import { GitService } from "../src/services/GithubService";
+import { BackAppJiraRequesterStrategy } from "../src/services/JiraIssue/BackAppJiraRequesterStrategy";
+import { JiraIssuesService } from "../src/services/JiraIssue/JiraIssuesService";
+import { BackUserJiraRequesterStrategy } from "../src/services/JiraIssue/BackUserJiraRequesterStrategy";
+import { FrontJiraRequesterStrategy } from "../src/services/JiraIssue/FrontJiraRequesterStrategy";
+import { PullRequestEventEnum } from "../src/types";
 
 describe("Services", () => {
     beforeEach(() => {
@@ -76,7 +75,6 @@ describe("Services", () => {
         expect(result).toStrictEqual(MOCKED_MERGE_RESPONSE);
     });
 
-    
     it("Get issue", async () => {
         await mockRequestJira.mockResolvedValueOnce({
             json: async () => MOCKED_ISSUE

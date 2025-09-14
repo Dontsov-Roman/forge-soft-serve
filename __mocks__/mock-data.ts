@@ -5,7 +5,7 @@ import {
     GitRepository,
     GitUser,
     MergePullRequestResponse,
-} from '../types';
+} from '../src/types';
 
 export const MOCKED_GIT_USER: GitUser = {
     id: 1,

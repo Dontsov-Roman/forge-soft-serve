@@ -1,8 +1,8 @@
 import { mockRequestJira } from '@forge/api';
 import { mockOctokitVerify } from '@octokit/webhooks';
 import { GIT_HEADERS as headers, WEBHOOK, MOCKED_ISSUE_TRANSITION } from 'mock-data';
-import { gitMergeHook } from './git';
-import { RESPONSE } from './response';
+import { gitMergeHook } from '../src/webHooks/git';
+import { RESPONSE } from '../src/webHooks/response';
 
 describe('Git Web Hook', () => {
     beforeEach(() => {
