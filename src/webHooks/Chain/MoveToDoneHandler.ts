@@ -12,7 +12,6 @@ export class MoveToDoneHandler extends ChainAbstractHandler {
         const key = getIssueKey(hook?.pull_request?.title || "");
 
         if (!key || !(await issueService.moveToDone(key))) {
-            console.log(RESPONSE.NOT_FOUND);
             return RESPONSE.NOT_FOUND;
         }
 

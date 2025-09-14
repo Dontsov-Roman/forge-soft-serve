@@ -13,11 +13,9 @@ export class CheckActionHandler extends ChainAbstractHandler {
     }
 
     public async handle(request: WebTriggerEvent, hook?: GitHook): Promise<WebTriggerResponse | null> {
-        console.log(hook?.action, hook?.pull_request?.title);
         const key = getIssueKey(hook?.pull_request?.title || "");
 
         if (!key || hook?.action !== this.action) {
-            console.log(RESPONSE.BAD_REQUEST);
             return RESPONSE.BAD_REQUEST;
         }
 

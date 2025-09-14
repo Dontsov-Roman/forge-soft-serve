@@ -39,8 +39,6 @@ export class JiraIssuesService {
 
     async getTransitions(id: string): Promise<IssueTransition[]> {
         const transitions = await this.requestStrategy.getTransitions(id, this.getMethod);
-        // console.log('Transitions:');
-        // console.log(transitions);
         return transitions;
     }
 
@@ -52,9 +50,7 @@ export class JiraIssuesService {
     async moveToDone(id: string) {
         const transitions = await this.getTransitions(id);
         const doneTransition = transitions?.find((t: any) => (t?.name === this.DONE || t?.to.name === this.DONE) && t.isAvailable);
-        console.log('=============================');
-        console.log('Done transition id:');
-        console.log(doneTransition?.id);
+
         if (doneTransition) {
             return this.changeIssueStatus(id, doneTransition.id);
         }
