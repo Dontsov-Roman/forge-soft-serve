@@ -1,36 +1,47 @@
-# Forge Hello World
+# Forge Practice for SoftServe
 
-This project contains a Forge app written in Javascript that displays `Hello World!` in a Jira admin page. 
+## About project
 
-See [developer.atlassian.com/platform/forge/](https://developer.atlassian.com/platform/forge) for documentation and tutorials explaining Forge.
+### Dependency:
+- @forge/bridge
+- @forge/kvs
+- @forge/react
+- @forge/resolver
+- @tanstack/react-query
+- octokit
+- react
 
-## Requirements
+### Language: Typescript
+### Front-end architecture: Feature-based
+### Patterns used:
+- Strategy for different request type for JiraService(3 strategies)
+- Chain of responsobility for webhook
+- Singleton for services
+- Facade as main Service class
 
-See [Set up Forge](https://developer.atlassian.com/platform/forge/set-up-forge/) for instructions to get set up.
+## Tests:
+- used jest with mocked data
 
-## Quick start
+### For check tests run:
+```
+npm test
+```
 
-- Modify your app frontend by editing the `src/frontend/index.jsx` file.
+## Deploy and Run
 
-- Modify your app backend by editing the `src/resolvers/index.js` file to define resolver functions. See [Forge resolvers](https://developer.atlassian.com/platform/forge/runtime-reference/custom-ui-resolver/) for documentation on resolver functions.
-
-- Build and deploy your app by running:
+### For deploy:
 ```
 forge deploy
 ```
-
-- Install your app in an Atlassian site by running:
+### Then:
 ```
 forge install
 ```
-
-- Develop your app by running `forge tunnel` to proxy invocations locally:
+### For update run:
+```
+forge install --upgrade
+```
+### For active develop run tunnel:
 ```
 forge tunnel
 ```
-
-### Notes
-- Use the `forge deploy` command when you want to persist code changes.
-- Use the `forge install` command when you want to install the app on a new site.
-- Once the app is installed on a site, the site picks up the new app changes you deploy without needing to rerun the install command.
-
