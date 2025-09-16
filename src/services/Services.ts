@@ -1,6 +1,6 @@
 import { GitService } from "./Github/GithubService";
 import { KvsStrategy } from "./Github/KvsStrategy";
-import { IGithubStrategy } from "./Github/types";
+import { IGithubStoreStrategy } from "./Github/types";
 import { JiraIssuesService } from "./JiraIssue/JiraIssuesService";
 import { IIssueRequesterStrategy } from "./JiraIssue/types";
 
@@ -11,7 +11,7 @@ export class Services {
     static organization: string;
     static version: string;
     static requestStrategy: IIssueRequesterStrategy;
-    static githubStrategy: IGithubStrategy;
+    static githubStrategy: IGithubStoreStrategy;
 
     static async createGitService() {
         if (!Services.githubService) {

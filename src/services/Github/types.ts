@@ -1,10 +1,10 @@
-export interface IGithubStrategy { 
+export interface IGithubStoreStrategy { 
     getToken(): Promise<string | undefined>;
     setToken(token: string): Promise<boolean>;
 }
 
 export interface IGithubContext {
-    setStrategy(strategy: IGithubStrategy): void;
+    setStrategy(strategy: IGithubStoreStrategy): void;
     init(): Promise<void>;
 }
 

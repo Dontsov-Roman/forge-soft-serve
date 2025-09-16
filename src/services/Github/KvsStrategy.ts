@@ -1,8 +1,8 @@
 import { kvs } from '@forge/kvs'
-import { IGithubStrategy } from './types';
+import { IGithubStoreStrategy } from './types';
 import { GIT_HUB_STORE_KEY } from '../../constants';
 
-export class KvsStrategy implements IGithubStrategy {
+export class KvsStrategy implements IGithubStoreStrategy {
     async getToken(): Promise<string | undefined> {
          return kvs.getSecret(GIT_HUB_STORE_KEY);
     }

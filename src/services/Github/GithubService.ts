@@ -1,14 +1,14 @@
 import { Octokit } from "octokit";
 import { CreateReviewPullRequest, GetPullRequestPayload, GitPullRequest, GitRepository, MergePullRequestPayload, MergePullRequestResponse } from "../../types";
-import { IGithubContext, IGithubStrategy } from "./types";
+import { IGithubContext, IGithubStoreStrategy } from "./types";
 
 export class GitService implements IGithubContext {
     private octokit: Octokit;
     private org: string;
     private version: string;
-    private strategy: IGithubStrategy;
+    private strategy: IGithubStoreStrategy;
 
-    constructor(organization: string, version: string, strategy: IGithubStrategy) {
+    constructor(organization: string, version: string, strategy: IGithubStoreStrategy) {
         this.org = organization;
         this.version = version;
         this.strategy = strategy;
@@ -26,7 +26,7 @@ export class GitService implements IGithubContext {
         this.octokit = new Octokit({ auth });
     }
 
-    setStrategy(strategy: IGithubStrategy): void {
+    setStrategy(strategy: IGithubStoreStrategy): void {
         this.strategy = strategy;
     }
 
