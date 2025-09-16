@@ -16,7 +16,7 @@ modules:
   scheduledTrigger:
     - key: my-db-schema
       function: runMigrations
-      interval: hour 
+      interval: fiveMinute 
 
   jira:adminPage:
     - key: forge-soft-serve-auth
@@ -47,6 +47,10 @@ modules:
       handler: index.gitMergeHook
     - key: runMigrations
       handler: index.runMigrations
+  sql:
+    - key: main
+      engine: mysql
+
 resources:
   - key: auth
     path: src/frontend/auth.tsx

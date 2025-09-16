@@ -2,6 +2,7 @@ import { sql } from '@forge/sql'
 import { IGithubStrategy, GithubKeyValueTable } from './types';
 import { GIT_HUB_STORE_KEY } from '../../constants';
 
+// This one just for a test, in real project it should be managed by some ORM and incapsulated(queries at least)
 export class SqlStrategy implements IGithubStrategy {
     async getToken(): Promise<string | undefined> {
         const result = await sql
