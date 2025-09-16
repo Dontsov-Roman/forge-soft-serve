@@ -4,6 +4,7 @@
 
 ### Dependency:
 - @forge/bridge
+- @forge/sql
 - @forge/kvs
 - @forge/react
 - @forge/resolver
