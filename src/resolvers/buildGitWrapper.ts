@@ -4,7 +4,7 @@ import { Services } from "../services/Services";
 import { SqlStrategy } from "../services/Github/SqlStrategy";
 import { KvsStrategy } from "../services/Github/KvsStrategy";
 
-const githubStrategy = new KvsStrategy();
+const githubStrategy = new SqlStrategy();
 
 export function buildGitWrapper<Args = never, R = unknown>(cb: ResolverFunction<Args, R>): ResolverFunction<Args, R> {
     const resolver: ResolverFunction<Args, R> = async (...args) => {

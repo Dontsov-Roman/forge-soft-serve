@@ -15,13 +15,13 @@ export class SqlStrategy implements IGithubStrategy {
     async setToken(token: string): Promise<boolean> {
         if (await this.getToken()) {
             await sql
-                .prepare<GithubKeyValueTable>(`INSERT INTO ${GITHUB_TABLE_NAME} VALUES (?, ?)`)
-                .bindParams(GIT_HUB_STORE_KEY, token)
+                .prepare<GithubKeyValueTable>(`UPDATE ${GITHUB_TABLE_NAME} SET value = ? WHERE store_key = ?`)
+                .bindParams(token, GIT_HUB_STORE_KEY)
                 .execute();
         } else {
             await sql
-                .prepare<GithubKeyValueTable>(`UPDATE ${GITHUB_TABLE_NAME} SET value = ? WHERE store_key = ?`)
-                .bindParams(token, GIT_HUB_STORE_KEY)
+                .prepare<GithubKeyValueTable>(`INSERT INTO ${GITHUB_TABLE_NAME} (store_key, value) VALUES (?, ?)`)
+                .bindParams(GIT_HUB_STORE_KEY, token)
                 .execute();
         }
         return true;

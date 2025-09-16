@@ -10,7 +10,7 @@ import {
 
 import { Services } from "../src/services/Services";
 import { GIT_HUB_ORG, GIT_HUB_VERSION } from "../src/constants";
-import { GitService } from "../src/services/GithubService";
+import { GitService } from "../src/services/Github/GithubService";
 import { BackAppJiraRequesterStrategy } from "../src/services/JiraIssue/BackAppJiraRequesterStrategy";
 import { JiraIssuesService } from "../src/services/JiraIssue/JiraIssuesService";
 import { BackUserJiraRequesterStrategy } from "../src/services/JiraIssue/BackUserJiraRequesterStrategy";
