@@ -1,4 +1,6 @@
-import { GitService } from "./GithubService";
+import { GitService } from "./Github/GithubService";
+import { KvsStrategy } from "./Github/KvsStrategy";
+import { IGithubStrategy } from "./Github/types";
 import { JiraIssuesService } from "./JiraIssue/JiraIssuesService";
 import { IIssueRequesterStrategy } from "./JiraIssue/types";
 
@@ -9,10 +11,11 @@ export class Services {
     static organization: string;
     static version: string;
     static requestStrategy: IIssueRequesterStrategy;
+    static githubStrategy: IGithubStrategy;
 
     static async createGitService() {
         if (!Services.githubService) {
-            Services.githubService = new GitService(Services.organization, Services.version);
+            Services.githubService = new GitService(Services.organization, Services.version, Services.githubStrategy);
             await Services.githubService.init();
         }
     }
@@ -26,9 +29,11 @@ export class Services {
     static async buildGit(
         organization: string,
         version: string,
+        githubStrategy = new KvsStrategy(),
     ) {
         Services.organization = organization;
         Services.version = version;
+        Services.githubStrategy = githubStrategy;
         return Services.createGitService();
     }
 

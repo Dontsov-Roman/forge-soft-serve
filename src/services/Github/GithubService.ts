@@ -1,16 +1,17 @@
 import { Octokit } from "octokit";
-import { kvs } from '@forge/kvs'
-import { CreateReviewPullRequest, GetPullRequestPayload, GitPullRequest, GitRepository, MergePullRequestPayload, MergePullRequestResponse } from "../types";
-import { GIT_HUB_STORE_KEY } from "../constants";
+import { CreateReviewPullRequest, GetPullRequestPayload, GitPullRequest, GitRepository, MergePullRequestPayload, MergePullRequestResponse } from "../../types";
+import { IGithubContext, IGithubStrategy } from "./types";
 
-export class GitService {
+export class GitService implements IGithubContext {
     private octokit: Octokit;
     private org: string;
     private version: string;
+    private strategy: IGithubStrategy;
 
-    constructor(organization: string, version: string) {
+    constructor(organization: string, version: string, strategy: IGithubStrategy) {
         this.org = organization;
         this.version = version;
+        this.strategy = strategy;
         this.init();
     }
 
@@ -21,13 +22,17 @@ export class GitService {
     }
 
     async init() {
-        const auth = await kvs.getSecret(GIT_HUB_STORE_KEY);
+        const auth = await this.strategy.getToken();
         this.octokit = new Octokit({ auth });
+    }
+
+    setStrategy(strategy: IGithubStrategy): void {
+        this.strategy = strategy;
     }
 
     async setToken(auth: string) {
         this.octokit = new Octokit({ auth });
-        await kvs.setSecret(GIT_HUB_STORE_KEY, auth);
+        await this.strategy.setToken(auth);
         console.log('token applied');
         return true;
     }

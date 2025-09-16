@@ -1,0 +1,9 @@
+export const GITHUB_TABLE_NAME = 'GithubKeys';
+
+export const GITHUB_TABLE_CREATE = `CREATE TABLE IF NOT EXIST ${GITHUB_TABLE_NAME}(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    key VARCHAR(100) NOT NULL,
+    value VARCHAR(255)
+)`;
+
+export const GITHUB_INDEXES_CREATE = `CREATE INDEX git_key_index ON ${GITHUB_TABLE_NAME} (key)`;

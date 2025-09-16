@@ -13,6 +13,11 @@ modules:
       events:
         - webtrigger
 
+  scheduledTrigger:
+    - key: my-db-schema
+      function: runMigrations
+      interval: hour 
+
   jira:adminPage:
     - key: forge-soft-serve-auth
       resource: auth
@@ -34,11 +39,14 @@ modules:
         function: resolver
       render: native
       title: forge-soft-serve
+
   function:
     - key: resolver
       handler: index.handler
     - key: github-hook
       handler: index.gitMergeHook
+    - key: runMigrations
+      handler: index.runMigrations
 resources:
   - key: auth
     path: src/frontend/auth.tsx
