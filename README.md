@@ -15,6 +15,7 @@
 ### Front-end architecture: Feature-based
 ### Patterns used:
 - Strategy for different request type for JiraService(3 strategies)
+- Strategy for store and get token for GitHub(via kvs and sql)
 - Chain of responsobility for webhook
 - Singleton for services
 
