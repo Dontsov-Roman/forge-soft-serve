@@ -13,10 +13,10 @@ modules:
       events:
         - webtrigger
 
-  scheduledTrigger:
-    - key: my-db-schema
-      function: runMigrations
-      interval: fiveMinute 
+  # scheduledTrigger:
+  #   - key: my-db-schema
+  #     function: runMigrations
+  #     interval: fiveMinute
 
   jira:adminPage:
     - key: forge-soft-serve-auth

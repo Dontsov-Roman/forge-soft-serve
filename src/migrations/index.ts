@@ -10,8 +10,8 @@ export const runMigrations = async () => {
         const successfulMigrations = await migrations.run();
         console.log('Migrations run Successfully');
         console.log(successfulMigrations);
-    } catch (e) {
+    } catch (e: any) {
         console.log('Migrations Failed');
-        console.log(e);
+        console.log(JSON.stringify(e));
     }
 };

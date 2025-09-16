@@ -9,6 +9,6 @@ export interface IGithubContext {
 }
 
 export type GithubKeyValueTable = {
-    key: string;
+    store_key: string;
     value: string;
 }
